@@ -53,7 +53,7 @@ const App = () => {
         </Stack>
       </Stack>
     </Stack> */}
-      {/* <Stack p={2}>
+      <Stack p={2}>
        <Stack direction={'row'} spacing={2}>
        <Link to="/">Add Product</Link>
        <Link to="/productList">Product List</Link>
@@ -63,7 +63,7 @@ const App = () => {
           <Route path="/" element={<AddProduct />} />
           <Route path="/productList" element={<ProductList />} />
         </Routes>
-      </Stack> */}
+      </Stack>
     </div>
   );
 };
