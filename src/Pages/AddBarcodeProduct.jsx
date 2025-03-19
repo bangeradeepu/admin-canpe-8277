@@ -58,7 +58,8 @@ const AddBarcodeProduct = () => {
   const fetchProductByBarcode = async (barcode) => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/products/barcode/${barcode}`);
-      setProduct(response.data);
+      setProduct(response.data.product);
+      console.log(response.data.product)
     } catch (error) {
       console.error('Product not found:', error);
     }
