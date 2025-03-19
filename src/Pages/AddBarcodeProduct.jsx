@@ -190,7 +190,7 @@ const AddBarcodeProduct = () => {
               value={product.barcode}
               onChange={handleChange}
               margin="normal"
-              required
+              
             />
             <TextField
               fullWidth
