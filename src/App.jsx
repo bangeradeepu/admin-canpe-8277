@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React, { useState } from "react";
@@ -32,6 +33,9 @@ import {
   ChartBarStacked,
   Power,
 } from "lucide-react";
+
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import WarehouseOutlinedIcon from '@mui/icons-material/WarehouseOutlined';
 
 const App = () => {
   return (
@@ -73,8 +77,8 @@ const App = () => {
                 display: "block",
               })}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <CirclePlus fontSize="small" />
+               <Stack direction="row" alignItems="center" spacing={0.5}>
+                <CategoryOutlinedIcon sx={{fontSize:18}} />
                 <Box>Add Product</Box>
               </Stack>
             </NavLink>
@@ -88,8 +92,8 @@ const App = () => {
                 display: "block",
               })}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <AlignLeft fontSize="small" />
+               <Stack direction="row" alignItems="center" spacing={0.5}>
+                <CategoryOutlinedIcon sx={{fontSize:18}} />
                 <Box>Product List</Box>
               </Stack>
             </NavLink>
@@ -103,12 +107,13 @@ const App = () => {
                 display: "block",
               })}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <ScanBarcode fontSize="small" />
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <CategoryOutlinedIcon sx={{fontSize:18}} />
                 <Box>Add Barcode Product</Box>
               </Stack>
             </NavLink>
-           
+            <Divider sx={{mt:1,mb:1}} />
+            <Typography sx={{fontSize:12}}>Key Data</Typography>
             <NavLink
               to="/category"
               style={({ isActive }) => ({
@@ -119,9 +124,24 @@ const App = () => {
                 display: "block",
               })}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <ChartBarStacked fontSize="small" />
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <CategoryOutlinedIcon sx={{fontSize:18}} />
                 <Box>Category</Box>
+              </Stack>
+            </NavLink>
+            <NavLink
+              to="/warehouse"
+              style={({ isActive }) => ({
+                textDecoration: "none",
+                color: isActive ? "#000000" : "#aeaeae",
+
+                padding: "10px 0",
+                display: "block",
+              })}
+            >
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <WarehouseOutlinedIcon sx={{fontSize:18}} />
+                <Box>Warehouse</Box>
               </Stack>
             </NavLink>
           </Stack>
@@ -137,11 +157,12 @@ const App = () => {
             }}
           >
             <Routes>
-          <Route path="/" element={<AddProduct />} />
-          <Route path="/productList" element={<ProductList />} />
-          <Route path="/barcodeProduct" element={<AddBarcodeProduct />} />
-          <Route path="/category" element={<Category />} />
-        </Routes>
+              <Route path="/" element={<AddProduct />} />
+              <Route path="/productList" element={<ProductList />} />
+              <Route path="/barcodeProduct" element={<AddBarcodeProduct />} />
+              <Route path="/category" element={<Category />} />
+              <Route path="/warehouse" element={<Category />} />
+            </Routes>
           </Stack>
         </Stack>
       </Stack>

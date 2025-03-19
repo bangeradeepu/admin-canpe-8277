@@ -8,7 +8,17 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    Paper,
+    TableHead,
+    TableRow,
+    IconButton
 } from "@mui/material";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const API_URL = `${import.meta.env.VITE_API_URL}/category`;
 
@@ -63,7 +73,7 @@ const Category = () => {
       />
       <Button
         sx={{
-          mt: 2,
+          mt: 1,
           backgroundColor: "#000000",
           "&:hover": { backgroundColor: "#333333" },
         }}
@@ -73,13 +83,33 @@ const Category = () => {
       >
         Add Category
       </Button>
-      <List>
-        {categories.map((cat) => (
-          <ListItem key={cat._id}>
-            <ListItemText primary={cat.categoryName} />
-          </ListItem>
-        ))}
-      </List>
+      <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>No</TableCell>
+            <TableCell>Category</TableCell>
+            <TableCell>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {categories.map((cat, index) => (
+            <TableRow key={cat._id}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>{cat.categoryName}</TableCell>
+              <TableCell>
+                <IconButton color="error" onClick={() => handleDelete(cat._id)}>
+                  <DeleteOutlineOutlinedIcon />
+                </IconButton>
+                <IconButton color="error" onClick={() => handleDelete(cat._id)}>
+                  <EditOutlinedIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
     </Container>
   );
 };
