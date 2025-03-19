@@ -22,6 +22,7 @@ import ProductList from "./Pages/ProductList";
 import './App.css'
 import Sidebar from "./Components/Sidebar";
 import BarcodeScanner from "./Components/BarcodeScanner";
+import AddBarcodeProduct from "./Pages/AddBarcodeProduct";
 
 const App = () => {
   return (
@@ -56,12 +57,14 @@ const App = () => {
       <Stack p={2}>
        <Stack direction={'row'} spacing={2}>
        <Link to="/">Add Product</Link>
+       <Link to="/barcodeProduct">Add Barcode Product</Link>
        <Link to="/productList">Product List</Link>
        </Stack>
 
         <Routes>
           <Route path="/" element={<AddProduct />} />
           <Route path="/productList" element={<ProductList />} />
+          <Route path="/barcodeProduct" element={<AddBarcodeProduct />} />
         </Routes>
       </Stack>
     </div>
