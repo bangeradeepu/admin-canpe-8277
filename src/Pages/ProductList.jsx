@@ -46,10 +46,10 @@ const ProductList = () => {
   return (
     <Box p={3}>
       <Typography variant="h5" gutterBottom>
-        Product Listv
+        Product List
       </Typography>
-      <TableContainer component={Paper}>
-        <Table>
+      
+        <Table sx={{fontSize:12}}>
           <TableHead>
             <TableRow>
               <TableCell>
@@ -94,14 +94,14 @@ const ProductList = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} align="center">
+                <TableCell colSpan={7} align="center">
                   No products found.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </TableContainer>
+      
     </Box>
   );
 };

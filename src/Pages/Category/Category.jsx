@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, TextField, Button, List, ListItem, ListItemText, Typography } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/category`;
 
@@ -46,13 +54,23 @@ const Category = () => {
         label="Category Name"
         variant="outlined"
         fullWidth
+        size="small"
         value={categoryName}
         onChange={(e) => setCategoryName(e.target.value)}
         error={!!error}
         helperText={error}
         sx={{ mb: 2 }}
       />
-      <Button variant="contained" color="primary" onClick={handleAddCategory}>
+      <Button
+        sx={{
+          mt: 2,
+          backgroundColor: "#000000",
+          "&:hover": { backgroundColor: "#333333" },
+        }}
+        variant="contained"
+        color="primary"
+        onClick={handleAddCategory}
+      >
         Add Category
       </Button>
       <List>

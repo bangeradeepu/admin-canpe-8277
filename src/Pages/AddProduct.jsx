@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from "react";
 import {
   TextField,
   MenuItem,
@@ -7,21 +7,22 @@ import {
   Typography,
   Paper,
   CircularProgress,
-} from '@mui/material';
-import Cropper from 'react-easy-crop';
-import { storage } from '../firebase/firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import axios from 'axios';
+  Stack,
+} from "@mui/material";
+import Cropper from "react-easy-crop";
+import { storage } from "../firebase/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import axios from "axios";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
-    productName: '',
-    productCost: '',
-    productPrice: '',
-    productQuantity: '',
-    barcode:'',
-    warehouse: 'PADU-ABHI-WAR-1',
-    productImage: '',
+    productName: "",
+    productCost: "",
+    productPrice: "",
+    productQuantity: "",
+    barcode: "",
+    warehouse: "PADU-ABHI-WAR-1",
+    productImage: "",
   });
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -31,13 +32,18 @@ const AddProduct = () => {
   const [uploading, setUploading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-  const warehouses = ['PADU-ABHI-WAR-1'];
+  const warehouses = ["PADU-ABHI-WAR-1"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({
       ...prev,
-      [name]: ['productCost', 'productPrice', 'productQuantity','barcode'].includes(name)
+      [name]: [
+        "productCost",
+        "productPrice",
+        "productQuantity",
+        "barcode",
+      ].includes(name)
         ? Number(value)
         : value,
     }));
@@ -63,8 +69,8 @@ const AddProduct = () => {
     image.src = imageSrc;
     await new Promise((resolve) => (image.onload = resolve));
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
     canvas.width = 300; // Square size
     canvas.height = 300;
@@ -85,13 +91,13 @@ const AddProduct = () => {
       canvas.toBlob((blob) => {
         setCroppedImage(blob);
         resolve(blob);
-      }, 'image/jpeg');
+      }, "image/jpeg");
     });
   };
 
   const uploadImage = async () => {
     const croppedBlob = await getCroppedImage();
-    if (!croppedBlob) return '';
+    if (!croppedBlob) return "";
 
     setUploading(true);
     const storageRef = ref(storage, `canpe-product-images/${Date.now()}.jpg`);
@@ -99,11 +105,11 @@ const AddProduct = () => {
 
     return new Promise((resolve, reject) => {
       uploadTask.on(
-        'state_changed',
+        "state_changed",
         null,
         (error) => {
           setUploading(false);
-          console.error('Upload error:', error);
+          console.error("Upload error:", error);
           reject(error);
         },
         async () => {
@@ -119,7 +125,7 @@ const AddProduct = () => {
     e.preventDefault();
 
     try {
-      let imageUrl = 'https://placehold.jp/50x50.png'; // Default placeholder
+      let imageUrl = "https://placehold.jp/50x50.png"; // Default placeholder
 
       if (imageSrc) {
         imageUrl = await uploadImage(); // Upload if an image is selected
@@ -131,116 +137,266 @@ const AddProduct = () => {
         `${import.meta.env.VITE_API_URL}/products`,
         finalProduct
       );
-      alert('Product Added Successfully');
+      alert("Product Added Successfully");
 
       setProduct({
-        productName: '',
-        productCost: '',
-        productPrice: '',
-        productQuantity: '',
-        warehouse: 'PADU-ABHI-WAR-1',
-        productImage: '',
+        productName: "",
+        productCost: "",
+        productPrice: "",
+        productQuantity: "",
+        warehouse: "PADU-ABHI-WAR-1",
+        productImage: "",
       });
 
       setImageSrc(null);
       setCroppedImage(null);
     } catch (error) {
-      console.error('Error adding product:', error);
+      console.error("Error adding product:", error);
     }
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-    >
-      <Paper elevation={3} sx={{ padding: 3, width: 400 }}>
-        <Typography variant="h5" gutterBottom>
-          Add Product
-        </Typography>
-        
-        <form onSubmit={handleSubmit}>
-        <TextField
-            fullWidth
-            label="Barcode"
-            type="number"
-            name="barcode"
-            value={product.barcode}
-            onChange={handleChange}
-            margin="normal"
-            
-          />
-          <TextField
-            fullWidth
-            label="Product Name"
-            name="productName"
-            value={product.productName}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <TextField
-            fullWidth
-            label="Product Cost"
-            type="number"
-            name="productCost"
-            value={product.productCost}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <TextField
-            fullWidth
-            label="Product Price"
-            type="number"
-            name="productPrice"
-            value={product.productPrice}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <TextField
-            fullWidth
-            label="Quantity"
-            type="number"
-            name="productQuantity"
-            value={product.productQuantity}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <TextField
-            fullWidth
-            select
-            label="Warehouse"
-            name="warehouse"
-            value={product.warehouse}
-            onChange={handleChange}
-            margin="normal"
-            required
-          >
-            {warehouses.map((wh) => (
-              <MenuItem key={wh} value={wh}>
-                {wh}
-              </MenuItem>
-            ))}
-          </TextField>
+    // <Box
+    //   display="flex"
+    //   justifyContent="center"
+    //   alignItems="center"
+    //   height="100vh"
+    // >
+    //   <Paper elevation={3} sx={{ padding: 3, width: 400 }}>
+    //     <Typography variant="h5" gutterBottom>
+    //       Add Product
+    //     </Typography>
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            style={{ marginTop: '10px' }}
-          />
+    //     <form onSubmit={handleSubmit}>
+    //     <TextField
+    //         fullWidth
+    //         label="Barcode"
+    //         type="number"
+    //         name="barcode"
+    //         value={product.barcode}
+    //         onChange={handleChange}
+    //         margin="normal"
 
-          {imageSrc && (
+    //       />
+    //       <TextField
+    //         fullWidth
+    //         label="Product Name"
+    //         name="productName"
+    //         value={product.productName}
+    //         onChange={handleChange}
+    //         margin="normal"
+    //         required
+    //       />
+    //       <TextField
+    //         fullWidth
+    //         label="Product Cost"
+    //         type="number"
+    //         name="productCost"
+    //         value={product.productCost}
+    //         onChange={handleChange}
+    //         margin="normal"
+    //         required
+    //       />
+    //       <TextField
+    //         fullWidth
+    //         label="Product Price"
+    //         type="number"
+    //         name="productPrice"
+    //         value={product.productPrice}
+    //         onChange={handleChange}
+    //         margin="normal"
+    //         required
+    //       />
+    //       <TextField
+    //         fullWidth
+    //         label="Quantity"
+    //         type="number"
+    //         name="productQuantity"
+    //         value={product.productQuantity}
+    //         onChange={handleChange}
+    //         margin="normal"
+    //         required
+    //       />
+    //       <TextField
+    //         fullWidth
+    //         select
+    //         label="Warehouse"
+    //         name="warehouse"
+    //         value={product.warehouse}
+    //         onChange={handleChange}
+    //         margin="normal"
+    //         required
+    //       >
+    //         {warehouses.map((wh) => (
+    //           <MenuItem key={wh} value={wh}>
+    //             {wh}
+    //           </MenuItem>
+    //         ))}
+    //       </TextField>
+
+    //       <input
+    //         type="file"
+    //         accept="image/*"
+    //         onChange={handleFileChange}
+    //         style={{ marginTop: '10px' }}
+    //       />
+
+    //       {imageSrc && (
+    //         <div>
+    //           <Box
+    //             sx={{
+    //               position: 'relative',
+    //               width: '100%',
+    //               height: 300,
+    //               marginTop: 2,
+    //             }}
+    //           >
+    //             <Cropper
+    //               image={imageSrc}
+    //               crop={crop}
+    //               zoom={zoom}
+    //               aspect={1}
+    //               onCropChange={setCrop}
+    //               onZoomChange={setZoom}
+    //               onCropComplete={onCropComplete}
+    //             />
+    //           </Box>
+    //           {/* <Button variant="contained" color="secondary" onClick={getCroppedImage} fullWidth sx={{ mt: 2 }}>
+    //         Crop Image
+    //       </Button> */}
+    //         </div>
+    //       )}
+
+    //       {uploading && (
+    //         <CircularProgress sx={{ display: 'block', margin: '10px auto' }} />
+    //       )}
+
+    //       <Button
+    //         type="submit"
+    //         variant="contained"
+    //         color="primary"
+    //         fullWidth
+    //         sx={{ mt: 2 }}
+    //         disabled={uploading}
+    //       >
+    //         Add Product
+    //       </Button>
+    //     </form>
+    //   </Paper>
+    // </Box>
+    <Stack>
+      <Typography variant="h5" gutterBottom>
+        Add Product
+      </Typography>
+      <Stack direction={"row"} spacing={2}>
+        <Stack sx={{ width: "50%" }}>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Barcode"
+              type="number"
+              name="barcode"
+              value={product.barcode}
+              onChange={handleChange}
+              margin="normal"
+              size="small"
+            />
+            <TextField
+              fullWidth
+              label="Product Name"
+              name="productName"
+              value={product.productName}
+              onChange={handleChange}
+              margin="normal"
+              size="small"
+              required
+            />
+            <TextField
+              fullWidth
+              label="Product Cost"
+              type="number"
+              name="productCost"
+              value={product.productCost}
+              onChange={handleChange}
+              margin="normal"
+              size="small"
+              required
+            />
+            <TextField
+              fullWidth
+              label="Product Price"
+              type="number"
+              name="productPrice"
+              value={product.productPrice}
+              onChange={handleChange}
+              margin="normal"
+              size="small"
+              required
+            />
+            <TextField
+              fullWidth
+              label="Quantity"
+              type="number"
+              name="productQuantity"
+              value={product.productQuantity}
+              onChange={handleChange}
+              margin="normal"
+              size="small"
+              required
+            />
+            <TextField
+              fullWidth
+              select
+              label="Warehouse"
+              name="warehouse"
+              value={product.warehouse}
+              onChange={handleChange}
+              margin="normal"
+              size="small"
+              required
+            >
+              {warehouses.map((wh) => (
+                <MenuItem key={wh} value={wh}>
+                  {wh}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ marginTop: "10px" }}
+            />
+
+            {uploading && (
+              <CircularProgress
+                sx={{ display: "block", margin: "10px auto" }}
+              />
+            )}
+
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{
+                mt: 2,
+                backgroundColor: "#000000",
+                "&:hover": { backgroundColor: "#333333" },
+              }}
+              disabled={uploading}
+            >
+              Add Product
+            </Button>
+          </form>
+        </Stack>
+        <Stack sx={{ width: "50%" }}>
+          {imageSrc ? (
             <div>
               <Box
                 sx={{
-                  position: 'relative',
-                  width: '100%',
+                  position: "relative",
+                  width: "100%",
                   height: 300,
                   marginTop: 2,
                 }}
@@ -255,29 +411,15 @@ const AddProduct = () => {
                   onCropComplete={onCropComplete}
                 />
               </Box>
-              {/* <Button variant="contained" color="secondary" onClick={getCroppedImage} fullWidth sx={{ mt: 2 }}>
-            Crop Image
-          </Button> */}
             </div>
+          ) : (
+           <Stack sx={{backgroundColor:'#F5F5F5',mt:2,borderRadius:2,pl:2,pr:2,pt:6,pb:6}}>
+           <Typography textAlign={'center'} sx={{color:'#aeaeae'}}> No image selected</Typography>
+           </Stack>
           )}
-
-          {uploading && (
-            <CircularProgress sx={{ display: 'block', margin: '10px auto' }} />
-          )}
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mt: 2 }}
-            disabled={uploading}
-          >
-            Add Product
-          </Button>
-        </form>
-      </Paper>
-    </Box>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 };
 
