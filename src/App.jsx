@@ -26,7 +26,7 @@ import BarcodeScanner from "./Components/BarcodeScanner";
 const App = () => {
   return (
     <div>
-      <BarcodeScanner />
+      {/* <BarcodeScanner /> */}
      {/* <Stack p={2} sx={{ height: "100vh", backgroundColor: "#f5f5f5" }}>
       <Stack direction="row" p={2} spacing={2} sx={{ backgroundColor: "white", borderRadius: 2 }}>
         <Box>Dashboard</Box>

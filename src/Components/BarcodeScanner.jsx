@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 
-const BarcodeScanner = () => {
+const BarcodeScanner = ({onBarcodeScanned}) => {
   const [data, setData] = useState("No barcode scanned");
   const [scanning, setScanning] = useState(true);
 
@@ -15,6 +15,7 @@ const BarcodeScanner = () => {
       scanner.render(
         (decodedText) => {
           setData(decodedText);
+          onBarcodeScanned(decodedText);
           setScanning(false);
           scanner.clear();
         },
