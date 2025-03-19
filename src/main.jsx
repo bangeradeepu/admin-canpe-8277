@@ -10,6 +10,11 @@ const theme = createTheme({
   typography: {
     fontFamily: '"Montserrat", sans-serif', // Use Quicksand as default
   },
+  palette: {
+    background: {
+      default: "#ededed",
+    },
+  },
 });
 
 createRoot(document.getElementById('root')).render(
