@@ -23,9 +23,15 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import SubjectOutlinedIcon from '@mui/icons-material/SubjectOutlined';
 import CropFreeOutlinedIcon from '@mui/icons-material/CropFreeOutlined';
 import VaccinesOutlinedIcon from '@mui/icons-material/VaccinesOutlined';
+import SensorsIcon from '@mui/icons-material/Sensors';
+import CheckIcon from '@mui/icons-material/Check';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import SportsMotorsportsOutlinedIcon from '@mui/icons-material/SportsMotorsportsOutlined';
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useLocation } from "react-router-dom";
+
 
 
 const SideNavigation = () => {
@@ -44,9 +50,41 @@ const SideNavigation = () => {
         borderRadius: 2,
         fontSize: isNavigationPage ? 16 : 14,
         border: !isNavigationPage ? 1 : 'none',
-        borderColor: '#dadada'
+        borderColor: '#dadada',
+        overflowY:'auto'
       }}
     >
+      <Typography sx={{ fontSize: 12 }}>Orders</Typography>
+      <NavLink
+        to="/liveOrder"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <SensorsIcon sx={{ fontSize: 18,color:'red' }} />
+          <Box>Live Orders</Box>
+        </Stack>
+      </NavLink>
+      <NavLink
+        to="/completedOrders"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <CheckIcon sx={{ fontSize: 18 }} />
+          <Box>Completed Orders</Box>
+        </Stack>
+      </NavLink>
+      <Divider sx={{ mt: 1, mb: 1 }} />
+      <Typography sx={{ fontSize: 12 }}>Products</Typography>
       <NavLink
         to="/"
         style={({ isActive }) => ({
@@ -136,6 +174,55 @@ const SideNavigation = () => {
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <VaccinesOutlinedIcon sx={{ fontSize: 18 }} />
           <Box>Units</Box>
+        </Stack>
+      </NavLink>
+      <Divider sx={{ mt: 1, mb: 1 }} />
+      <Typography sx={{ fontSize: 12 }}>Peoples</Typography>
+      <NavLink
+        to="/users"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <PeopleAltOutlinedIcon sx={{ fontSize: 18 }} />
+          <Box>Users</Box>
+        </Stack>
+      </NavLink>
+      <NavLink
+        to="/deliveryPartners"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <SportsMotorsportsOutlinedIcon sx={{ fontSize: 18 }} />
+          <Box>Delivry Partners</Box>
+        </Stack>
+      </NavLink>
+      <Divider sx={{ mt: 1, mb: 1 }} />
+      <Typography sx={{ fontSize: 12 }}>POS Settings</Typography>
+      <NavLink
+        to="/mapSetting"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <MapOutlinedIcon sx={{ fontSize: 18 }} />
+          <Box>Map Settings</Box>
         </Stack>
       </NavLink>
     </Stack>
