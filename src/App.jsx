@@ -55,26 +55,12 @@ const App = () => {
               <Route path="/barcodeProduct" element={<AddBarcodeProduct />} />
               <Route path="/category" element={<Category />} />
               <Route path="/warehouse" element={<Category />} />
+              <Route path="/navigation" element={<SideNavigation />} />
             </Routes>
           </Stack>
           
         </Stack>
       </Stack>
-      {/* <Stack p={2}>
-       <Stack direction={'row'} spacing={2}>
-       <Link to="/">Add Product</Link>
-       <Link to="/barcodeProduct">Add Barcode Product</Link>
-       <Link to="/productList">Product List</Link>
-       <Link to="/category">Category</Link>
-       </Stack>
-
-        <Routes>
-          <Route path="/" element={<AddProduct />} />
-          <Route path="/productList" element={<ProductList />} />
-          <Route path="/barcodeProduct" element={<AddBarcodeProduct />} />
-          <Route path="/category" element={<Category />} />
-        </Routes>
-      </Stack> */}
     </div>
   );
 };

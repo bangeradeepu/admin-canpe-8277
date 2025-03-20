@@ -21,12 +21,18 @@ import {
 
   import useMediaQuery from '@mui/material/useMediaQuery';
 
+  import { useNavigate } from "react-router-dom";
+
 
   const TopNavigation = () => {
     const matches = useMediaQuery('(min-width:600px)');
+    const navigate = useNavigate();
+    const goToHome = () => {
+      navigate("/navigation"); // Navigates to the "/home" route
+    };
     return(
       <div>
-   <Stack
+      <Stack
         direction="row"
         justifyContent={"space-between"}
         alignItems={"center"}
@@ -36,7 +42,9 @@ import {
       >
         <Typography sx={{ color: "black" }}>admin</Typography>
         <Stack direction={"row"} alignItems={"center"} spacing={2}>
-          <MenuIcon />
+          {!matches && (
+            <MenuIcon  onClick={goToHome} />
+          )}
         </Stack>
       </Stack>
       </div>
