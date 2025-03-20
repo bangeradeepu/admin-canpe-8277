@@ -15,16 +15,14 @@ import {
     Paper,
     TableHead,
     TableRow,
-    IconButton,
-    Stack,
-    Box
+    IconButton
 } from "@mui/material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const API_URL = `${import.meta.env.VITE_API_URL}/category`;
 
-const Category = () => {
+const Warehouse = () => {
   const [categoryName, setCategoryName] = useState("");
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState("");
@@ -58,8 +56,8 @@ const Category = () => {
   };
 
   return (
-    <Box>
-      <Typography variant="h5" gutterBottom>
+    <Container>
+      <Typography variant="h4" gutterBottom>
         Category Management
       </Typography>
       <TextField
@@ -75,50 +73,45 @@ const Category = () => {
       />
       <Button
         sx={{
+          mt: 1,
           backgroundColor: "#000000",
           "&:hover": { backgroundColor: "#333333" },
-          fontSize: "0.8rem",
-          textTransform: "none",
         }}
         variant="contained"
         color="primary"
         onClick={handleAddCategory}
-        size={'small'}
       >
         Add Category
       </Button>
-      <Stack sx={{mt:2}}>
-      <Table size="small">
+      <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontSize: "0.875rem", fontWeight: "bold" }}>No</TableCell>
-            <TableCell sx={{ fontSize: "0.875rem", fontWeight: "bold" }}>Category</TableCell>
-            <TableCell sx={{ fontSize: "0.875rem", fontWeight: "bold" }} align="right">
-              Actions
-            </TableCell>
+            <TableCell>No</TableCell>
+            <TableCell>Category</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {categories.map((cat, index) => (
             <TableRow key={cat._id}>
-              <TableCell sx={{ fontSize: "0.75rem" }}>{index + 1}</TableCell>
-              <TableCell sx={{ fontSize: "0.75rem" }}>{cat.categoryName}</TableCell>
-              <TableCell sx={{ fontSize: "0.75rem" }} align="right">
-                <IconButton color="error" size="small" onClick={() => handleDelete(cat._id)}>
-                  <DeleteOutlineOutlinedIcon fontSize="small" />
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>{cat.categoryName}</TableCell>
+              <TableCell>
+                <IconButton color="error" onClick={() => handleDelete(cat._id)}>
+                  <DeleteOutlineOutlinedIcon />
                 </IconButton>
-                <IconButton color="primary" size="small" onClick={() => handleEdit(cat._id)}>
-                  <EditOutlinedIcon fontSize="small" />
+                <IconButton color="error" onClick={() => handleDelete(cat._id)}>
+                  <EditOutlinedIcon />
                 </IconButton>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      </Stack>
-      
-    </Box>
+    </TableContainer>
+    </Container>
   );
 };
 
-export default Category;
+export default Warehouse;

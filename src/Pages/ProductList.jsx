@@ -25,8 +25,8 @@ const ProductList = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/products`
       );
-      setProducts(response.data.products); // Ensure your API returns an object with `products`
-      console.log(response.data.products);
+      setProducts(response.data.products || []); // Ensure your API returns an object with `products`
+      console.log(response.data.products || []);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -76,7 +76,7 @@ const ProductList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.length > 0 ? (
+            {products?.length > 0 ? (
               products.map((product, index) => (
                 <TableRow key={index}>
                   <TableCell>
