@@ -59,7 +59,7 @@ const SideNavigation = () => {
         to="/liveOrder"
         style={({ isActive }) => ({
           textDecoration: "none",
-          color: isActive ? "#000000" : "#aeaeae",
+          color: isActive ? "red" : "red",
           padding: "10px 0",
           display: "block",
         })}
