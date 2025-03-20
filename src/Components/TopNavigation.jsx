@@ -62,7 +62,7 @@ const TopNavigation = () => {
         sx={{ backgroundColor: "white", borderRadius: 2, border: 1, borderColor: '#dadada' }}
       >
         <Typography sx={{ color: "black" }}>admin</Typography>
-        <Stack direction={"row"} alignItems={"center"} spacing={2} >
+        <Stack direction={"row"} alignItems={"center"} spacing={1} >
           {matches && (
             <Divider orientation="vertical" variant="middle" flexItem />
           )}
