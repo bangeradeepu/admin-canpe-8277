@@ -1,65 +1,85 @@
 import React, { useState } from "react";
 import { Route, Routes, Link, NavLink } from "react-router-dom";
 import {
-    Stack,
-    Box,
-    Container,
-    Typography,
-    IconButton,
-    Button,
-    Dialog,
-    Menu,
-    MenuItem,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Divider,
-  } from "@mui/material";
+  Stack,
+  Box,
+  Container,
+  Typography,
+  IconButton,
+  Button,
+  Dialog,
+  Menu,
+  MenuItem,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Switch,
+  Avatar
+} from "@mui/material";
 
-  import MenuIcon from '@mui/icons-material/Menu';
-  import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
-  import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
-
-  import useMediaQuery from '@mui/material/useMediaQuery';
-
-  import { useNavigate } from "react-router-dom";
+import MenuIcon from '@mui/icons-material/Menu';
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
+import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
+import BroadcastOnHomeOutlinedIcon from '@mui/icons-material/BroadcastOnHomeOutlined';
 
 
-  const TopNavigation = () => {
-    const matches = useMediaQuery('(min-width:600px)');
-    const navigate = useNavigate();
-    const goToHome = () => {
-      navigate("/navigation"); // Navigates to the "/home" route
-    };
-    const goToAddProduct = () => {
-      navigate("/barcodeProduct")
-    }
-    const goToProductList = () => {
-      navigate("/productList")
-    }
-    return(
-      <div>
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+import { useNavigate } from "react-router-dom";
+
+
+const TopNavigation = () => {
+  const matches = useMediaQuery('(min-width:600px)');
+  const navigate = useNavigate();
+  const goToHome = () => {
+    navigate("/navigation"); // Navigates to the "/home" route
+  };
+  const goToAddProduct = () => {
+    navigate("/barcodeProduct")
+  }
+  const goToProductList = () => {
+    navigate("/productList")
+  }
+  const goToAccount = () => {
+    navigate("/account")
+  }
+  return (
+    <div>
       <Stack
         direction="row"
         justifyContent={"space-between"}
         alignItems={"center"}
-        p={2}
+        pl={2}
+        pr={2}
+        pb={2}
+        pt={2}
         spacing={2}
-        sx={{ backgroundColor: "white", borderRadius: 2,border:1,borderColor:'#dadada' }}
+        sx={{ backgroundColor: "white", borderRadius: 2, border: 1, borderColor: '#dadada' }}
       >
         <Typography sx={{ color: "black" }}>admin</Typography>
-        <Stack direction={"row"} alignItems={"center"} spacing={2}>
-         
-          <InventoryOutlinedIcon onClick={goToProductList}  />
-          <QrCodeScannerOutlinedIcon onClick={goToAddProduct} />
+        <Stack direction={"row"} alignItems={"center"} spacing={2} >
+          {matches && (
+            <Divider orientation="vertical" variant="middle" flexItem />
+          )}
+          <Switch defaultChecked size="small" color="success" />
+          <BroadcastOnHomeOutlinedIcon sx={{ fontSize: 18, color: '#2e2e2e' }} />
+          <InventoryOutlinedIcon onClick={goToProductList} sx={{ fontSize: 18, color: '#2e2e2e' }} />
+          <QrCodeScannerOutlinedIcon onClick={goToAddProduct} sx={{ fontSize: 18, color: '#2e2e2e' }} />
           {!matches && (
-            <MenuIcon  onClick={goToHome} />
+            <MenuIcon onClick={goToHome} sx={{ fontSize: 18 }} />
+          )}
+          {matches && (
+            <Divider orientation="vertical" variant="middle" flexItem />
+          )}
+          {matches && (
+            <Avatar onClick={goToAccount} sx={{ width: 30, height: 30 }} alt="Cindy Baker" src="https://images.freeimages.com/clg/istock/previews/1026/102672691-animal-emotion-avatar-vector-icon.jpg" />
           )}
         </Stack>
       </Stack>
-      </div>
-     
-    )
-  }
-  export default TopNavigation
+    </div>
+
+  )
+}
+export default TopNavigation

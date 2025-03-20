@@ -28,7 +28,10 @@ import CheckIcon from '@mui/icons-material/Check';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import SportsMotorsportsOutlinedIcon from '@mui/icons-material/SportsMotorsportsOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
-
+import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
+import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
+import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
+import BroadcastOnHomeOutlinedIcon from '@mui/icons-material/BroadcastOnHomeOutlined';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useLocation } from "react-router-dom";
 
@@ -223,6 +226,53 @@ const SideNavigation = () => {
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <MapOutlinedIcon sx={{ fontSize: 18 }} />
           <Box>Map Settings</Box>
+        </Stack>
+      </NavLink>
+      <NavLink
+        to="/broadcast"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <BroadcastOnHomeOutlinedIcon sx={{ fontSize: 18 }} />
+          <Box>Broadcast</Box>
+        </Stack>
+      </NavLink>
+      <Divider sx={{ mt: 1, mb: 1 }} />
+      <Typography sx={{ fontSize: 12 }}>Account</Typography>
+      <NavLink
+        to="/accountSetting"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <InsertEmoticonOutlinedIcon sx={{ fontSize: 18 }} />
+          <Box>Account Settings</Box>
+        </Stack>
+      </NavLink>
+      <NavLink
+        to="/logout"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <PowerSettingsNewOutlinedIcon sx={{ fontSize: 18 }} />
+          <Box>Logout</Box>
         </Stack>
       </NavLink>
     </Stack>
