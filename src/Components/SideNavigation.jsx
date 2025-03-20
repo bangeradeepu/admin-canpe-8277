@@ -23,11 +23,16 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import SubjectOutlinedIcon from '@mui/icons-material/SubjectOutlined';
 import CropFreeOutlinedIcon from '@mui/icons-material/CropFreeOutlined';
 import VaccinesOutlinedIcon from '@mui/icons-material/VaccinesOutlined';
+
+import useMediaQuery from '@mui/material/useMediaQuery';
   
 
   const SideNavigation = () => {
+    const matches = useMediaQuery('(min-width:600px)');
     return(
-        <Stack
+  
+  
+      <Stack
         sx={{
           p: 2,
           backgroundColor: "white",
@@ -131,6 +136,9 @@ import VaccinesOutlinedIcon from '@mui/icons-material/VaccinesOutlined';
           </Stack>
         </NavLink>
       </Stack>
+    
+    
+       
 
     )
   }

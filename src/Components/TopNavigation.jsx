@@ -16,18 +16,17 @@ import {
     DialogTitle,
     Divider,
   } from "@mui/material";
-  import {
-    Settings,
-    ScanBarcode,
-    CirclePlus,
-    AlignLeft,
-    ChartBarStacked,
-    Power,
-  } from "lucide-react";
+
+  import MenuIcon from '@mui/icons-material/Menu';
+
+  import useMediaQuery from '@mui/material/useMediaQuery';
+
 
   const TopNavigation = () => {
+    const matches = useMediaQuery('(min-width:600px)');
     return(
-        <Stack
+      <div>
+   <Stack
         direction="row"
         justifyContent={"space-between"}
         alignItems={"center"}
@@ -37,10 +36,11 @@ import {
       >
         <Typography sx={{ color: "black" }}>admin</Typography>
         <Stack direction={"row"} alignItems={"center"} spacing={2}>
-          <Settings />
-          <Power />
+          <MenuIcon />
         </Stack>
       </Stack>
+      </div>
+     
     )
   }
   export default TopNavigation

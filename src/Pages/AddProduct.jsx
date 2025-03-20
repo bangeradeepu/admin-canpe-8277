@@ -160,9 +160,11 @@ const AddProduct = () => {
       <Typography variant="h5" gutterBottom>
         Add Product
       </Typography>
-      <Stack direction={"row"} spacing={2}>
-        <Stack sx={{ width: "50%" }}>
-          <form onSubmit={handleSubmit}>
+
+
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-md-6">
             <TextField
               fullWidth
               label="Barcode"
@@ -173,6 +175,8 @@ const AddProduct = () => {
               margin="normal"
               size="small"
             />
+          </div>
+          <div className="col-md-6">
             <TextField
               fullWidth
               label="Product Name"
@@ -183,6 +187,8 @@ const AddProduct = () => {
               size="small"
               required
             />
+          </div>
+          <div className="col-md-6">
             <TextField
               fullWidth
               label="Product Cost"
@@ -194,6 +200,8 @@ const AddProduct = () => {
               size="small"
               required
             />
+          </div>
+          <div className="col-md-6">
             <TextField
               fullWidth
               label="Product Price"
@@ -205,6 +213,8 @@ const AddProduct = () => {
               size="small"
               required
             />
+          </div>
+          <div className="col-md-6">
             <TextField
               fullWidth
               label="Quantity"
@@ -216,6 +226,8 @@ const AddProduct = () => {
               size="small"
               required
             />
+          </div>
+          <div className="col-md-6">
             <TextField
               fullWidth
               select
@@ -233,64 +245,69 @@ const AddProduct = () => {
                 </MenuItem>
               ))}
             </TextField>
+          </div>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              style={{ marginTop: "10px" }}
-            />
+        </div>
 
-            {uploading && (
-              <CircularProgress
-                sx={{ display: "block", margin: "10px auto" }}
-              />
-            )}
 
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
+
+
+
+
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          style={{ marginTop: "10px" }}
+        />
+        {imageSrc ? (
+          <div>
+            <Box
               sx={{
-                mt: 2,
-                backgroundColor: "#000000",
-                "&:hover": { backgroundColor: "#333333" },
+                position: "relative",
+                width: "100%",
+                height: 300,
+                marginTop: 2,
               }}
-              disabled={uploading}
             >
-              Add Product
-            </Button>
-          </form>
-        </Stack>
-        <Stack sx={{ width: "50%" }}>
-          {imageSrc ? (
-            <div>
-              <Box
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  height: 300,
-                  marginTop: 2,
-                }}
-              >
-                <Cropper
-                  image={imageSrc}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={1}
-                  onCropChange={setCrop}
-                  onZoomChange={setZoom}
-                  onCropComplete={onCropComplete}
-                />
-              </Box>
-            </div>
-          ) : (
-           <Stack sx={{backgroundColor:'#F5F5F5',mt:2,borderRadius:2,pl:2,pr:2,pt:6,pb:6}}>
-           <Typography textAlign={'center'} sx={{color:'#aeaeae'}}> No image selected</Typography>
-           </Stack>
-          )}
-        </Stack>
-      </Stack>
+              <Cropper
+                image={imageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
+            </Box>
+          </div>
+        ) : (
+          <Stack sx={{ backgroundColor: '#F5F5F5', mt: 2, borderRadius: 2, pl: 2, pr: 2, pt: 6, pb: 6 }}>
+            <Typography textAlign={'center'} sx={{ color: '#aeaeae' }}> No image selected</Typography>
+          </Stack>
+        )}
+
+        {uploading && (
+          <CircularProgress
+            sx={{ display: "block", margin: "10px auto" }}
+          />
+        )}
+
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{
+            mt: 2,
+            backgroundColor: "#000000",
+            "&:hover": { backgroundColor: "#333333" },
+          }}
+          disabled={uploading}
+        >
+          Add Product
+        </Button>
+      </form>
     </Stack>
   );
 };

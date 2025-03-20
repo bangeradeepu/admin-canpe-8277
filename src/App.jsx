@@ -24,8 +24,9 @@ import AddBarcodeProduct from "./Pages/AddBarcodeProduct";
 import Category from "./Pages/Category/Category";
 import SideNavigation from "./Components/SideNavigation";
 import TopNavigation from "./Components/TopNavigation";
-
+import useMediaQuery from '@mui/material/useMediaQuery';
 const App = () => {
+  const matches = useMediaQuery('(min-width:600px)');
   return (
     <div>
       {/* <BarcodeScanner /> */}
@@ -33,11 +34,12 @@ const App = () => {
         <TopNavigation />
 
         <Stack direction="row" spacing={2} mt={2} sx={{ flexGrow: 1 }}>
+          {matches && ( 
         <SideNavigation />
-
+          )}
           <Stack
             sx={{
-              width: "80%",
+              width: matches ? "80%" : "100%",
               backgroundColor: "white",
               borderRadius: 2,
               overflowY: "auto",
@@ -55,6 +57,7 @@ const App = () => {
               <Route path="/warehouse" element={<Category />} />
             </Routes>
           </Stack>
+          
         </Stack>
       </Stack>
       {/* <Stack p={2}>
