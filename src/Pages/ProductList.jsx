@@ -86,7 +86,7 @@ const ProductList = () => {
                   <TableCell>₹{product.productCost}</TableCell>
                   <TableCell>₹{product.productPrice}</TableCell>
                   <TableCell>{product.productQuantity}</TableCell>
-                  <TableCell>{product.warehouse}</TableCell>
+                  <TableCell>{product.warehouse?.warehouseName}</TableCell>
                   <TableCell>
                     <DeleteIcon onClick={() => handleDelete(product._id)} />
                   </TableCell>

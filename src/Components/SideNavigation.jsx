@@ -165,7 +165,7 @@ const SideNavigation = () => {
         </Stack>
       </NavLink>
       <NavLink
-        to="/warehouse"
+        to="/units"
         style={({ isActive }) => ({
           textDecoration: "none",
           color: isActive ? "#000000" : "#aeaeae",

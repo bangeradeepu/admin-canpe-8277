@@ -14,24 +14,50 @@ import { storage } from "../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 
-
-
 const AddProduct = () => {
-
   useEffect(() => {
     getCategory();
-  }, [])
+    getWarehouse();
+    getUnit();
+  }, []);
 
   const [categoryData, setCategoryData] = useState([]);
   const getCategory = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/category`);
-      console.log(response.data.category)
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/category`
+      );
+      console.log(response.data.category);
       setCategoryData(response.data.category);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
+
+  const [warehouse, setWarehouse] = useState([]);
+  const getWarehouse = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/warehouse`
+      );
+      console.log(response.data.warehouse);
+      setWarehouse(response.data.warehouse);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [unit, setUnit] = useState([]);
+  const getUnit = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/units`);
+      console.log(response.data.units);
+      setUnit(response.data.units);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const [product, setProduct] = useState({
     productName: "",
     productCost: "",
@@ -39,8 +65,11 @@ const AddProduct = () => {
     productQuantity: "",
     barcode: "",
     category: null,
-    warehouse: "PADU-ABHI-WAR-1",
+    warehouse: "",
+    unit: "",
+    unitValue: "",
     productImage: "",
+    description:"",
   });
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -49,9 +78,6 @@ const AddProduct = () => {
   const [croppedImage, setCroppedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-
-
-  const warehouses = ["PADU-ABHI-WAR-1"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -79,6 +105,13 @@ const AddProduct = () => {
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+  const handleCropChange = useCallback((newCrop) => {
+    setCrop(newCrop);
+  }, []);
+
+  const handleZoomChange = useCallback((newZoom) => {
+    setZoom(newZoom);
   }, []);
 
   const getCroppedImage = async () => {
@@ -163,8 +196,13 @@ const AddProduct = () => {
         productCost: "",
         productPrice: "",
         productQuantity: "",
-        warehouse: "PADU-ABHI-WAR-1",
+        category: null,
+        warehouse: "",
+        unit: "",
+        unitValue: "",
+        barcode: "",
         productImage: "",
+        description:"",
       });
 
       setImageSrc(null);
@@ -180,8 +218,6 @@ const AddProduct = () => {
         Add Product
       </Typography>
       <Box>
-
-
         <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-md-6">
@@ -259,9 +295,9 @@ const AddProduct = () => {
                 size="small"
                 required
               >
-                {warehouses.map((wh) => (
-                  <MenuItem key={wh} value={wh}>
-                    {wh}
+                {warehouse.map((wh) => (
+                  <MenuItem key={wh._id} value={wh._id}>
+                    {wh.warehouseName}
                   </MenuItem>
                 ))}
               </TextField>
@@ -284,22 +320,62 @@ const AddProduct = () => {
                   </MenuItem>
                 ))}
               </TextField>
-
             </div>
-
+            <div className="col-md-6">
+              <div className="row">
+                <div className="col-md-6">
+                  <TextField
+                    fullWidth
+                    select
+                    label="Unit"
+                    name="unit"
+                    value={product.unit || ""}
+                    onChange={handleChange}
+                    margin="normal"
+                    size="small"
+                    required
+                  >
+                    {unit.map((uni) => (
+                      <MenuItem key={uni._id} value={uni._id}>
+                        {uni.unitName}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
+                <div className="col-md-6">
+                  <TextField
+                    fullWidth
+                    label="Unit value"
+                    type="text"
+                    name="unitValue"
+                    value={product.unitValue}
+                    onChange={handleChange}
+                    margin="normal"
+                    size="small"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-
-
-
-
-
-
-
+          <TextField
+          sx={{mt:1}}
+            name="description"
+            id="desc"
+            label="Description"
+            variant="outlined"
+            multiline
+            rows={4} // Adjust the number of rows as needed
+            fullWidth
+            value={product.description}
+            onChange={handleChange}
+            required
+          />
           <input
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            style={{ marginTop: "10px", width: '100%' }}
+            style={{ marginTop: "10px", width: "100%" }}
           />
           {imageSrc && (
             <div>
@@ -316,8 +392,8 @@ const AddProduct = () => {
                   crop={crop}
                   zoom={zoom}
                   aspect={1}
-                  onCropChange={setCrop}
-                  onZoomChange={setZoom}
+                  onCropChange={handleCropChange}
+                  onZoomChange={handleZoomChange}
                   onCropComplete={onCropComplete}
                 />
               </Box>
@@ -325,9 +401,7 @@ const AddProduct = () => {
           )}
 
           {uploading && (
-            <CircularProgress
-              sx={{ display: "block", margin: "10px auto" }}
-            />
+            <CircularProgress sx={{ display: "block", margin: "10px auto" }} />
           )}
 
           <Button

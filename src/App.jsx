@@ -25,6 +25,8 @@ import Category from "./Pages/Category/Category";
 import SideNavigation from "./Components/SideNavigation";
 import TopNavigation from "./Components/TopNavigation";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Warehouse from "./Pages/Warehouse/Warehouse";
+import Units from "./Pages/Units/Units";
 const App = () => {
   const matches = useMediaQuery('(min-width:600px)');
   return (
@@ -54,8 +56,9 @@ const App = () => {
               <Route path="/productList" element={<ProductList />} />
               <Route path="/barcodeProduct" element={<AddBarcodeProduct />} />
               <Route path="/category" element={<Category />} />
-              <Route path="/warehouse" element={<Category />} />
+              <Route path="/warehouse" element={<Warehouse />} />
               <Route path="/navigation" element={<SideNavigation />} />
+              <Route path="/units" element={<Units />} />
             </Routes>
           </Stack>
           

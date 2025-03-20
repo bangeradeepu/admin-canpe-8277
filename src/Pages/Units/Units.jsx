@@ -22,45 +22,45 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-const Category = () => {
-  const [categoryName, setCategoryName] = useState("");
-  const [categories, setCategories] = useState([]);
+const Units = () => {
+  const [unitName, setUnitName] = useState("");
+  const [unit, setUnit] = useState([]);
   const [error, setError] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editCategory, setEditCategory] = useState(null); // Holds category being edited
+  const [editUnit, setEditUnit] = useState(null); // Holds category being edited
 
   useEffect(() => {
-    fetchCategories();
+    fetchUnit();
   }, []);
 
-  const fetchCategories = async () => {
+  const fetchUnit = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/category`);
-      setCategories(response.data.category || []);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/units`);
+      setUnit(response.data.units || []);
     } catch (error) {
-      setError("Error fetching categories");
+      setError("Error fetching units");
     }
   };
 
-  const handleAddCategory = async () => {
-    if (!categoryName.trim()) {
-      setError("Category name is required");
+  const handleAddUnit = async () => {
+    if (!unitName.trim()) {
+      setError("unit name is required");
       return;
     }
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/category`, { categoryName });
-      setCategoryName("");
+      await axios.post(`${import.meta.env.VITE_API_URL}/units`, { unitName });
+      setUnitName("");
       setError("");
-      fetchCategories();
+      fetchUnit();
     } catch (error) {
-      setError("Error adding category");
+      setError("Error adding units");
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/category/${id}`);
-      fetchCategories();
+      await axios.delete(`${import.meta.env.VITE_API_URL}/units/${id}`);
+      fetchUnit();
     } catch (error) {
       console.error(error);
     }
@@ -68,42 +68,42 @@ const Category = () => {
 
   const handleEdit = async (id) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/category/${id}`);
-      setEditCategory(response.data.category);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/units/${id}`);
+      setEditUnit(response.data.units);
       setEditModalOpen(true);
     } catch (error) {
-      console.error("Error fetching category:", error);
+      console.error("Error fetching units:", error);
     }
   };
 
-  const handleUpdateCategory = async () => {
-    if (!editCategory.categoryName.trim()) {
-      setError("Category name is required");
+  const handleUpdateUnit = async () => {
+    if (!editUnit.unitName.trim()) {
+      setError("Unit name is required");
       return;
     }
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}/category/${editCategory._id}`, {
-        categoryName: editCategory.categoryName,
+      await axios.put(`${import.meta.env.VITE_API_URL}/units/${editUnit._id}`, {
+        unitName: editUnit.unitName,
       });
       setEditModalOpen(false);
-      fetchCategories();
+      fetchUnit();
     } catch (error) {
-      console.error("Error updating category:", error);
+      console.error("Error updating units:", error);
     }
   };
 
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
-        Category Management
+        Unit Management
       </Typography>
       <TextField
-        label="Category Name"
+        label="Unit Name"
         variant="outlined"
         fullWidth
         size="small"
-        value={categoryName}
-        onChange={(e) => setCategoryName(e.target.value)}
+        value={unitName}
+        onChange={(e) => setUnitName(e.target.value)}
         error={!!error}
         helperText={error}
         sx={{ mb: 2 }}
@@ -116,10 +116,10 @@ const Category = () => {
           textTransform: "none",
         }}
         variant="contained"
-        onClick={handleAddCategory}
+        onClick={handleAddUnit}
         size="small"
       >
-        Add Category
+        Add Unit
       </Button>
 
       {/* Table */}
@@ -128,22 +128,22 @@ const Category = () => {
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontSize: "0.875rem", fontWeight: "bold" }}>No</TableCell>
-              <TableCell sx={{ fontSize: "0.875rem", fontWeight: "bold" }}>Category</TableCell>
+              <TableCell sx={{ fontSize: "0.875rem", fontWeight: "bold" }}>Unit name</TableCell>
               <TableCell sx={{ fontSize: "0.875rem", fontWeight: "bold" }} align="right">
                 Actions
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {categories.map((cat, index) => (
-              <TableRow key={cat._id}>
+            {unit.map((uni, index) => (
+              <TableRow key={uni._id}>
                 <TableCell sx={{ fontSize: "0.75rem" }}>{index + 1}</TableCell>
-                <TableCell sx={{ fontSize: "0.75rem" }}>{cat.categoryName}</TableCell>
+                <TableCell sx={{ fontSize: "0.75rem" }}>{uni.unitName}</TableCell>
                 <TableCell sx={{ fontSize: "0.75rem" }} align="right">
-                  <IconButton color="error" size="small" onClick={() => handleDelete(cat._id)}>
+                  <IconButton color="error" size="small" onClick={() => handleDelete(uni._id)}>
                     <DeleteOutlineOutlinedIcon fontSize="small" />
                   </IconButton>
-                  <IconButton color="primary" size="small" onClick={() => handleEdit(cat._id)}>
+                  <IconButton color="primary" size="small" onClick={() => handleEdit(uni._id)}>
                     <EditOutlinedIcon fontSize="small" />
                   </IconButton>
                 </TableCell>
@@ -169,14 +169,14 @@ const Category = () => {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Edit Category
+            Edit Unit
           </Typography>
           <TextField
-            label="Category Name"
+            label="Unit Name"
             fullWidth
             size="small"
-            value={editCategory?.categoryName || ""}
-            onChange={(e) => setEditCategory({ ...editCategory, categoryName: e.target.value })}
+            value={editUnit?.unitName || ""}
+            onChange={(e) => setEditUnit({ ...editUnit, unitName: e.target.value })}
             sx={{ mb: 2 }}
           />
           <Stack direction="row" justifyContent="flex-end" spacing={1}>
@@ -184,7 +184,7 @@ const Category = () => {
               variant="contained"
               sx={{ backgroundColor: "#000", "&:hover": { backgroundColor: "#333" } }}
               size="small"
-              onClick={handleUpdateCategory}
+              onClick={handleUpdateUnit}
             >
               Update
             </Button>
@@ -202,4 +202,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Units;
