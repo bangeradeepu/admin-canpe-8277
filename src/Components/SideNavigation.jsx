@@ -42,7 +42,7 @@ const SideNavigation = () => {
         width: isNavigationPage ? "100%" : "20%",
         height: "82vh",
         borderRadius: 2,
-        fontSize: 14,
+        fontSize: isNavigationPage ? 16 : 14,
         border: !isNavigationPage ? 1 : 'none',
         borderColor: '#dadada'
       }}
