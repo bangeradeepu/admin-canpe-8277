@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   TextField,
   MenuItem,
@@ -14,13 +14,31 @@ import { storage } from "../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 
+
+
 const AddProduct = () => {
+
+  useEffect(() => {
+    getCategory();
+  }, [])
+
+  const [categoryData, setCategoryData] = useState([]);
+  const getCategory = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/category`);
+      console.log(response.data.category)
+      setCategoryData(response.data.category);
+    } catch (error) {
+      console.error(error)
+    }
+  }
   const [product, setProduct] = useState({
     productName: "",
     productCost: "",
     productPrice: "",
     productQuantity: "",
     barcode: "",
+    category: null,
     warehouse: "PADU-ABHI-WAR-1",
     productImage: "",
   });
@@ -31,6 +49,7 @@ const AddProduct = () => {
   const [croppedImage, setCroppedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
 
   const warehouses = ["PADU-ABHI-WAR-1"];
 
@@ -162,149 +181,169 @@ const AddProduct = () => {
       </Typography>
       <Box>
 
-      
-      <form onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="col-md-6">
-            <TextField
-              fullWidth
-              label="Barcode"
-              type="number"
-              name="barcode"
-              value={product.barcode}
-              onChange={handleChange}
-              margin="normal"
-              size="small"
-            />
-          </div>
-          <div className="col-md-6">
-            <TextField
-              fullWidth
-              label="Product Name"
-              name="productName"
-              value={product.productName}
-              onChange={handleChange}
-              margin="normal"
-              size="small"
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <TextField
-              fullWidth
-              label="Product Cost"
-              type="number"
-              name="productCost"
-              value={product.productCost}
-              onChange={handleChange}
-              margin="normal"
-              size="small"
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <TextField
-              fullWidth
-              label="Product Price"
-              type="number"
-              name="productPrice"
-              value={product.productPrice}
-              onChange={handleChange}
-              margin="normal"
-              size="small"
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <TextField
-              fullWidth
-              label="Quantity"
-              type="number"
-              name="productQuantity"
-              value={product.productQuantity}
-              onChange={handleChange}
-              margin="normal"
-              size="small"
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <TextField
-              fullWidth
-              select
-              label="Warehouse"
-              name="warehouse"
-              value={product.warehouse}
-              onChange={handleChange}
-              margin="normal"
-              size="small"
-              required
-            >
-              {warehouses.map((wh) => (
-                <MenuItem key={wh} value={wh}>
-                  {wh}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
 
-        </div>
-
-
-
-
-
-
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          style={{ marginTop: "10px", width: '100%' }}
-        />
-        {imageSrc && (
-          <div>
-            <Box
-              sx={{
-                position: "relative",
-                width: "100%",
-                height: 300,
-                marginTop: 2,
-              }}
-            >
-              <Cropper
-                image={imageSrc}
-                crop={crop}
-                zoom={zoom}
-                aspect={1}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
-                onCropComplete={onCropComplete}
+        <form onSubmit={handleSubmit}>
+          <div className="row">
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Barcode"
+                type="number"
+                name="barcode"
+                value={product.barcode}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
               />
-            </Box>
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Product Name"
+                name="productName"
+                value={product.productName}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Product Cost"
+                type="number"
+                name="productCost"
+                value={product.productCost}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Product Price"
+                type="number"
+                name="productPrice"
+                value={product.productPrice}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Quantity"
+                type="number"
+                name="productQuantity"
+                value={product.productQuantity}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                select
+                label="Warehouse"
+                name="warehouse"
+                value={product.warehouse}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              >
+                {warehouses.map((wh) => (
+                  <MenuItem key={wh} value={wh}>
+                    {wh}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                select
+                label="Category"
+                name="category"
+                value={product.category || ""}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              >
+                {categoryData.map((ca) => (
+                  <MenuItem key={ca._id} value={ca._id}>
+                    {ca.categoryName}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+            </div>
+
           </div>
-        )}
 
-        {uploading && (
-          <CircularProgress
-            sx={{ display: "block", margin: "10px auto" }}
+
+
+
+
+
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ marginTop: "10px", width: '100%' }}
           />
-        )}
+          {imageSrc && (
+            <div>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  height: 300,
+                  marginTop: 2,
+                }}
+              >
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={1}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
+                />
+              </Box>
+            </div>
+          )}
 
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{
-            mt: 2,
-            backgroundColor: "#000000",
-            "&:hover": { backgroundColor: "#333333" },
-          }}
-          disabled={uploading}
-        >
-          Add Product
-        </Button>
-      </form>
+          {uploading && (
+            <CircularProgress
+              sx={{ display: "block", margin: "10px auto" }}
+            />
+          )}
+
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              mt: 2,
+              backgroundColor: "#000000",
+              "&:hover": { backgroundColor: "#333333" },
+            }}
+            disabled={uploading}
+          >
+            Add Product
+          </Button>
+        </form>
       </Box>
     </Stack>
   );
