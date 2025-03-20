@@ -160,8 +160,6 @@ const AddProduct = () => {
       <Typography variant="h5" gutterBottom>
         Add Product
       </Typography>
-
-
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6">
@@ -259,9 +257,9 @@ const AddProduct = () => {
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          style={{ marginTop: "10px" }}
+          style={{ marginTop: "10px",width:'100%' }}
         />
-        {imageSrc ? (
+        {imageSrc && (
           <div>
             <Box
               sx={{
@@ -282,10 +280,6 @@ const AddProduct = () => {
               />
             </Box>
           </div>
-        ) : (
-          <Stack sx={{ backgroundColor: '#F5F5F5', mt: 2, borderRadius: 2, pl: 2, pr: 2, pt: 6, pb: 6 }}>
-            <Typography textAlign={'center'} sx={{ color: '#aeaeae' }}> No image selected</Typography>
-          </Stack>
         )}
 
         {uploading && (
