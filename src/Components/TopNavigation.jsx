@@ -45,6 +45,9 @@ const TopNavigation = () => {
   const goToAccount = () => {
     navigate("/account")
   }
+  const goToBroadcast = () => {
+    navigate("/broadcast")
+  }
   return (
     <div>
       <Stack
@@ -64,11 +67,21 @@ const TopNavigation = () => {
             <Divider orientation="vertical" variant="middle" flexItem />
           )}
           <Switch defaultChecked size="small" color="success" />
+          <IconButton onClick={goToBroadcast}>
           <BroadcastOnHomeOutlinedIcon sx={{ fontSize: 18, color: '#2e2e2e' }} />
+          </IconButton>
+          <IconButton onClick={goToProductList}>
           <InventoryOutlinedIcon onClick={goToProductList} sx={{ fontSize: 18, color: '#2e2e2e' }} />
+          </IconButton>
+          
+          <IconButton onClick={goToAddProduct}>
           <QrCodeScannerOutlinedIcon onClick={goToAddProduct} sx={{ fontSize: 18, color: '#2e2e2e' }} />
+          </IconButton>
+          
           {!matches && (
-            <MenuIcon onClick={goToHome} sx={{ fontSize: 18 }} />
+            <IconButton onClick={goToHome}>
+            <MenuIcon  sx={{ fontSize: 18 }} />
+            </IconButton>
           )}
           {matches && (
             <Divider orientation="vertical" variant="middle" flexItem />
