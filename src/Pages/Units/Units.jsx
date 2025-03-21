@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { enqueueSnackbar } from "notistack";
 
 const Units = () => {
   const [unitName, setUnitName] = useState("");
@@ -52,8 +53,10 @@ const Units = () => {
       setUnitName("");
       setError("");
       fetchUnit();
+      enqueueSnackbar("Unit Added!", { variant: "success" });
     } catch (error) {
       setError("Error adding units");
+      enqueueSnackbar("Something went wrong!", { variant: "success" });
     }
   };
 
@@ -61,8 +64,10 @@ const Units = () => {
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/units/${id}`);
       fetchUnit();
+      enqueueSnackbar("Unit Deleted!", { variant: "success" });
     } catch (error) {
       console.error(error);
+      enqueueSnackbar("Something went wrong!", { variant: "success" });
     }
   };
 
@@ -71,8 +76,10 @@ const Units = () => {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/units/${id}`);
       setEditUnit(response.data.units);
       setEditModalOpen(true);
+      enqueueSnackbar("Unit Updated!", { variant: "success" });
     } catch (error) {
       console.error("Error fetching units:", error);
+      enqueueSnackbar("Something went wrong!", { variant: "success" });
     }
   };
 

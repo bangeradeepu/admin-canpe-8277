@@ -13,6 +13,7 @@ import Cropper from "react-easy-crop";
 import { storage } from "../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from "axios";
+import { enqueueSnackbar } from "notistack";
 
 const AddProduct = () => {
   useEffect(() => {
@@ -189,7 +190,7 @@ const AddProduct = () => {
         `${import.meta.env.VITE_API_URL}/products`,
         finalProduct
       );
-      alert("Product Added Successfully");
+      enqueueSnackbar("Product Added!", { variant: "success" });
 
       setProduct({
         productName: "",
@@ -209,6 +210,12 @@ const AddProduct = () => {
       setCroppedImage(null);
     } catch (error) {
       console.error("Error adding product:", error);
+      
+      if(error.response.data.message === 'Barcode already exists'){
+        enqueueSnackbar("Item already exists", { variant: "error" });
+      }else{
+        enqueueSnackbar("Something went wrong!", { variant: "error" });
+      }
     }
   };
 

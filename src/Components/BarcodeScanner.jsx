@@ -29,7 +29,7 @@ const BarcodeScanner = ({onBarcodeScanned}) => {
   }, [scanning]);
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
+    <div style={{ textAlign: "center" }}>
       <h2>Barcode Scanner</h2>
       {scanning && <div id="reader"></div>}
       <h3>Scanned Code: {data}</h3>

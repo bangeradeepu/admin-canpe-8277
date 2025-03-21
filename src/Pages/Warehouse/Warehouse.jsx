@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { enqueueSnackbar } from "notistack";
 
 const Warehouse = () => {
   const [warehouseName, setWarehouseName] = useState("");
@@ -52,8 +53,10 @@ const Warehouse = () => {
       setWarehouseName("");
       setError("");
       fetchWarehouse();
+      enqueueSnackbar("Warehouse Added!", { variant: "success" });
     } catch (error) {
       setError("Error adding warehouse");
+      enqueueSnackbar("Something went wrong!", { variant: "success" });
     }
   };
 
@@ -61,8 +64,10 @@ const Warehouse = () => {
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/warehouse/${id}`);
       fetchWarehouse();
+      enqueueSnackbar("Warehouse Deleted!", { variant: "success" });
     } catch (error) {
       console.error(error);
+      enqueueSnackbar("Something went wrong!", { variant: "success" });
     }
   };
 
@@ -71,8 +76,10 @@ const Warehouse = () => {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/warehouse/${id}`);
       setEditWarehouse(response.data.warehouse);
       setEditModalOpen(true);
+      enqueueSnackbar("Warehouse Updated!", { variant: "success" });
     } catch (error) {
       console.error("Error fetching warehouse:", error);
+      enqueueSnackbar("Something went wrong!", { variant: "success" });
     }
   };
 

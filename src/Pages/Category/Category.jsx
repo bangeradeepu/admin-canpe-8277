@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { enqueueSnackbar } from "notistack";
 
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -52,8 +53,10 @@ const Category = () => {
       setCategoryName("");
       setError("");
       fetchCategories();
+      enqueueSnackbar("Category Added!", { variant: "success" });
     } catch (error) {
       setError("Error adding category");
+      enqueueSnackbar("Something went wrong!", { variant: "error" });
     }
   };
 
@@ -61,8 +64,10 @@ const Category = () => {
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/category/${id}`);
       fetchCategories();
+      enqueueSnackbar("Category Deleted!", { variant: "success" });
     } catch (error) {
       console.error(error);
+      enqueueSnackbar("Something went wrong!", { variant: "error" });
     }
   };
 
@@ -71,8 +76,10 @@ const Category = () => {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/category/${id}`);
       setEditCategory(response.data.category);
       setEditModalOpen(true);
+      enqueueSnackbar("Category updated!", { variant: "success" });
     } catch (error) {
       console.error("Error fetching category:", error);
+      enqueueSnackbar("Something went wrong!", { variant: "error" });
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback,useEffect } from 'react';
 import {
   TextField,
   MenuItem,
@@ -14,16 +14,64 @@ import { storage } from '../firebase/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import axios from 'axios';
 import BarcodeScanner from '../Components/BarcodeScanner';
+import { enqueueSnackbar } from "notistack";
 
 const AddBarcodeProduct = () => {
+  useEffect(() => {
+    getCategory();
+    getWarehouse();
+    getUnit();
+  }, []);
+
+  const [categoryData, setCategoryData] = useState([]);
+  const getCategory = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/category`
+      );
+      console.log(response.data.category);
+      setCategoryData(response.data.category);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [warehouse, setWarehouse] = useState([]);
+  const getWarehouse = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/warehouse`
+      );
+      console.log(response.data.warehouse);
+      setWarehouse(response.data.warehouse);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [unit, setUnit] = useState([]);
+  const getUnit = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/units`);
+      console.log(response.data.units);
+      setUnit(response.data.units);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const [product, setProduct] = useState({
-    productName: '',
-    productCost: '',
-    productPrice: '',
-    productQuantity: '',
-    barcode: '',
-    warehouse: 'PADU-ABHI-WAR-1',
-    productImage: '',
+    productName: "",
+    productCost: "",
+    productPrice: "",
+    productQuantity: "",
+    barcode: "",
+    category: null,
+    warehouse: "",
+    unit: "",
+    unitValue: "",
+    productImage: "",
+    description:"",
   });
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -34,7 +82,6 @@ const AddBarcodeProduct = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [barcodeScanned, setBarcodeScanned] = useState('');
 
-  const warehouses = ['PADU-ABHI-WAR-1'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,12 +105,21 @@ const AddBarcodeProduct = () => {
   const fetchProductByBarcode = async (barcode) => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/products/barcode/${barcode}`);
-      setProduct(response.data.product);
-      console.log(response.data.product)
+      const productData = response.data.product;
+
+      setProduct({
+        ...productData,
+        category: productData.category?.categoryId || "", 
+        warehouse: productData.warehouse?.warehouseId || "", 
+        unit: productData.unit?.unitId || "", 
+        unitValue:productData.unit?.unitValue || "", 
+      });
+
+      console.log(productData);
     } catch (error) {
       console.error('Product not found:', error);
     }
-  };
+};
 
   const handleBarcodeScanned = useCallback((scannedBarcode) => {
     setProduct((prev) => ({
@@ -76,6 +132,13 @@ const AddBarcodeProduct = () => {
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+  const handleCropChange = useCallback((newCrop) => {
+    setCrop(newCrop);
+  }, []);
+
+  const handleZoomChange = useCallback((newZoom) => {
+    setZoom(newZoom);
   }, []);
 
   const getCroppedImage = async () => {
@@ -155,14 +218,18 @@ const AddBarcodeProduct = () => {
       );
       alert('Product Added Successfully');
 
-      setProduct({
-        productName: '',
-        productCost: '',
-        productPrice: '',
-        productQuantity: '',
-        barcode: '',
-        warehouse: 'PADU-ABHI-WAR-1',
-        productImage: '',
+       setProduct({
+        productName: "",
+        productCost: "",
+        productPrice: "",
+        productQuantity: "",
+        category: null,
+        warehouse: "",
+        unit: "",
+        unitValue: "",
+        barcode: "",
+        productImage: "",
+        description:"",
       });
 
       setImageSrc(null);
@@ -170,115 +237,231 @@ const AddBarcodeProduct = () => {
       setBarcodeScanned('');
     } catch (error) {
       console.error('Error adding product:', error);
+      if(error.response.data.message === 'Barcode already exists'){
+        enqueueSnackbar("Item already exists", { variant: "error" });
+      }else{
+        enqueueSnackbar("Something went wrong!", { variant: "error" });
+      }
     }
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+    <Stack>
       {barcodeScanned ? (
-        <Paper elevation={3} sx={{ padding: 3, width: 400 }}>
+        <Stack>
           <Typography variant="h5" gutterBottom>
             Add Product
           </Typography>
 
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              label="Barcode"
-              type="text"
-              name="barcode"
-              value={product.barcode}
-              onChange={handleChange}
-              margin="normal"
-              
-            />
-            <TextField
-              fullWidth
-              label="Product Name"
-              name="productName"
-              value={product.productName}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              label="Product Cost"
-              type="number"
-              name="productCost"
-              value={product.productCost}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              label="Product Price"
-              type="number"
-              name="productPrice"
-              value={product.productPrice}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              label="Quantity"
-              type="number"
-              name="productQuantity"
-              value={product.productQuantity}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              select
-              label="Warehouse"
-              name="warehouse"
-              value={product.warehouse}
-              onChange={handleChange}
-              margin="normal"
-              required
-            >
-              {warehouses.map((wh) => (
-                <MenuItem key={wh} value={wh}>
-                  {wh}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <input type="file" accept="image/*" onChange={handleFileChange} style={{ marginTop: '10px' }} />
-
-            {imageSrc && (
-              <div>
-                <Box sx={{ position: 'relative', width: '100%', height: 300, marginTop: 2 }}>
-                  <Cropper
-                    image={imageSrc}
-                    crop={crop}
-                    zoom={zoom}
-                    aspect={1}
-                    onCropChange={setCrop}
-                    onZoomChange={setZoom}
-                    onCropComplete={onCropComplete}
+          <Box>
+        <form onSubmit={handleSubmit}>
+          <div className="row">
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Barcode"
+                type="number"
+                name="barcode"
+                value={product.barcode}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Product Name"
+                name="productName"
+                value={product.productName}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Product Cost"
+                type="number"
+                name="productCost"
+                value={product.productCost}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Product Price"
+                type="number"
+                name="productPrice"
+                value={product.productPrice}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="Quantity"
+                type="number"
+                name="productQuantity"
+                value={product.productQuantity}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                select
+                label="Warehouse"
+                name="warehouse"
+                value={product.warehouse}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              >
+                {warehouse.map((wh) => (
+                  <MenuItem key={wh._id} value={wh._id}>
+                    {wh.warehouseName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                select
+                label="Category"
+                name="category"
+                value={product.category || ""}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              >
+                {categoryData.map((ca) => (
+                  <MenuItem key={ca._id} value={ca._id}>
+                    {ca.categoryName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div className="col-md-6">
+              <div className="row">
+                <div className="col-md-6">
+                  <TextField
+                    fullWidth
+                    select
+                    label="Unit"
+                    name="unit"
+                    value={product.unit || ""}
+                    onChange={handleChange}
+                    margin="normal"
+                    size="small"
+                    required
+                  >
+                    {unit.map((uni) => (
+                      <MenuItem key={uni._id} value={uni._id}>
+                        {uni.unitName}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
+                <div className="col-md-6">
+                  <TextField
+                    fullWidth
+                    label="Unit value"
+                    type="text"
+                    name="unitValue"
+                    value={product.unitValue}
+                    onChange={handleChange}
+                    margin="normal"
+                    size="small"
+                    required
                   />
-                </Box>
+                </div>
               </div>
-            )}
+            </div>
+          </div>
+          <TextField
+          sx={{mt:1}}
+            name="description"
+            id="desc"
+            label="Description"
+            variant="outlined"
+            multiline
+            rows={4} // Adjust the number of rows as needed
+            fullWidth
+            value={product.description}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ marginTop: "10px", width: "100%" }}
+          />
+          {imageSrc && (
+            <div>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  height: 300,
+                  marginTop: 2,
+                }}
+              >
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={1}
+                  onCropChange={handleCropChange}
+                  onZoomChange={handleZoomChange}
+                  onCropComplete={onCropComplete}
+                />
+              </Box>
+            </div>
+          )}
 
-            {uploading && <CircularProgress sx={{ display: 'block', margin: '10px auto' }} />}
+          {uploading && (
+            <CircularProgress sx={{ display: "block", margin: "10px auto" }} />
+          )}
 
-            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={uploading}>
-              Add Product
-            </Button>
-          </form>
-        </Paper>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              mt: 2,
+              backgroundColor: "#000000",
+              "&:hover": { backgroundColor: "#333333" },
+            }}
+            disabled={uploading}
+          >
+            Add Product
+          </Button>
+        </form>
+      </Box>
+        </Stack>
       ) : (
         <Stack>
           <BarcodeScanner onBarcodeScanned={handleBarcodeScanned} />
         </Stack>
       )}
-    </Box>
+    </Stack>
   );
 };
 
