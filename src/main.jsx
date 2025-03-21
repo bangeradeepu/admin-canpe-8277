@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css'
 import App from './App.jsx'
+import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 // Create a custom theme
 const theme = createTheme({
   typography: {
@@ -22,7 +23,9 @@ createRoot(document.getElementById('root')).render(
     <Router>
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <SnackbarProvider>
       <App />
+      </SnackbarProvider>
     </ThemeProvider>
     </Router>
   </StrictMode>,

@@ -27,6 +27,8 @@ import TopNavigation from "./Components/TopNavigation";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Warehouse from "./Pages/Warehouse/Warehouse";
 import Units from "./Pages/Units/Units";
+import MapSettings from "./Pages/PosSettings/MapSettings";
+import Broadcast from "./Pages/PosSettings/Broadcast";
 const App = () => {
   const matches = useMediaQuery('(min-width:600px)');
   return (
@@ -59,6 +61,8 @@ const App = () => {
               <Route path="/warehouse" element={<Warehouse />} />
               <Route path="/navigation" element={<SideNavigation />} />
               <Route path="/units" element={<Units />} />
+              <Route path="/mapSetting" element={<MapSettings />} />
+              <Route path="/broadcast" element={<Broadcast />} />
             </Routes>
           </Stack>
           
