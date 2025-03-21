@@ -32,6 +32,8 @@ import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsAc
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
 import BroadcastOnHomeOutlinedIcon from '@mui/icons-material/BroadcastOnHomeOutlined';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useLocation } from "react-router-dom";
 
@@ -46,7 +48,7 @@ const SideNavigation = () => {
 
     <Stack
       sx={{
-        p: !isNavigationPage ? 2 : 'none',
+        p: !isNavigationPage ? 1 : 'none',
         backgroundColor: "white",
         width: isNavigationPage ? "100%" : "20%",
         height: "82vh",
@@ -54,9 +56,12 @@ const SideNavigation = () => {
         fontSize: isNavigationPage ? 16 : 14,
         border: !isNavigationPage ? 1 : 'none',
         borderColor: '#dadada',
-        overflowY:'auto'
+        // overflowY:'auto'
       }}
     >
+      <Stack sx={{overflowY:!isNavigationPage ? 'auto' : 'none',p:1}}>
+
+     
       <Typography sx={{ fontSize: 12 }}>Orders</Typography>
       <NavLink
         to="/liveOrder"
@@ -128,8 +133,23 @@ const SideNavigation = () => {
         })}
       >
         <Stack direction="row" alignItems="center" spacing={0.5}>
-          <CropFreeOutlinedIcon sx={{ fontSize: 18 }} />
+          <QrCodeScannerOutlinedIcon sx={{ fontSize: 18 }} />
           <Box>Add Barcode Product</Box>
+        </Stack>
+      </NavLink>
+      <NavLink
+        to="/quantityAdjustment"
+        style={({ isActive }) => ({
+          textDecoration: "none",
+          color: isActive ? "#000000" : "#aeaeae",
+
+          padding: "10px 0",
+          display: "block",
+        })}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <ProductionQuantityLimitsIcon sx={{ fontSize: 18 }} />
+          <Box>Quantity Adjustments</Box>
         </Stack>
       </NavLink>
       <Divider sx={{ mt: 1, mb: 1 }} />
@@ -275,6 +295,7 @@ const SideNavigation = () => {
           <Box>Logout</Box>
         </Stack>
       </NavLink>
+      </Stack>
     </Stack>
 
 

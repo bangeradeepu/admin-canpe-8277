@@ -10,10 +10,10 @@ import {
   Stack,
 } from '@mui/material';
 import Cropper from 'react-easy-crop';
-import { storage } from '../firebase/firebase';
+import { storage } from '../../firebase/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import axios from 'axios';
-import BarcodeScanner from '../Components/BarcodeScanner';
+import BarcodeScanner from '../../Components/BarcodeScanner';
 import { enqueueSnackbar } from "notistack";
 
 const AddBarcodeProduct = () => {

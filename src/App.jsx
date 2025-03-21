@@ -17,10 +17,10 @@ import {
 
 import React, { useState } from "react";
 import { Route, Routes, Link, NavLink } from "react-router-dom";
-import AddProduct from "./Pages/AddProduct";
-import ProductList from "./Pages/ProductList";
+import AddProduct from "./Pages/Products/AddProduct";
+import ProductList from "./Pages/Products/ProductList";
 import "./App.css";
-import AddBarcodeProduct from "./Pages/AddBarcodeProduct";
+import AddBarcodeProduct from "./Pages/Products/AddBarcodeProduct";
 import Category from "./Pages/Category/Category";
 import SideNavigation from "./Components/SideNavigation";
 import TopNavigation from "./Components/TopNavigation";
@@ -29,8 +29,10 @@ import Warehouse from "./Pages/Warehouse/Warehouse";
 import Units from "./Pages/Units/Units";
 import MapSettings from "./Pages/PosSettings/MapSettings";
 import Broadcast from "./Pages/PosSettings/Broadcast";
+import StatusIndicator from "./Components/StatusIndicator";
 const App = () => {
   const matches = useMediaQuery('(min-width:600px)');
+  
   return (
     <div>
       {/* <BarcodeScanner /> */}
@@ -43,16 +45,18 @@ const App = () => {
           )}
           <Stack
             sx={{
-              width: matches ? "80%" : "100%",
+              width: matches ? "60%" : "100%",
               backgroundColor: "white",
               borderRadius: 2,
-              overflowY: "auto",
-              p: 2,
+              p: 1,
               maxHeight: "82vh",
               border:1,
               borderColor:'#dadada'
             }}
           >
+            <Stack sx={{overflowY:'auto',p:1}}>
+
+            
             <Routes>
               <Route path="/" element={<AddProduct />} />
               <Route path="/productList" element={<ProductList />} />
@@ -64,8 +68,11 @@ const App = () => {
               <Route path="/mapSetting" element={<MapSettings />} />
               <Route path="/broadcast" element={<Broadcast />} />
             </Routes>
+            </Stack>
           </Stack>
-          
+          {matches && ( 
+        <StatusIndicator />  
+          )}
         </Stack>
       </Stack>
     </div>

@@ -16,38 +16,37 @@ import {
   DialogTitle,
   Divider,
   Switch,
-  Avatar
+  Avatar,
 } from "@mui/material";
 
-import MenuIcon from '@mui/icons-material/Menu';
-import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
-import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
-import BroadcastOnHomeOutlinedIcon from '@mui/icons-material/BroadcastOnHomeOutlined';
+import MenuIcon from "@mui/icons-material/Menu";
+import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
+import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
+import BroadcastOnHomeOutlinedIcon from "@mui/icons-material/BroadcastOnHomeOutlined";
 
-
-import useMediaQuery from '@mui/material/useMediaQuery';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { useNavigate } from "react-router-dom";
 
-
 const TopNavigation = () => {
-  const matches = useMediaQuery('(min-width:600px)');
+  
+  const matches = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
   const goToHome = () => {
     navigate("/navigation"); // Navigates to the "/home" route
   };
   const goToAddProduct = () => {
-    navigate("/barcodeProduct")
-  }
+    navigate("/barcodeProduct");
+  };
   const goToProductList = () => {
-    navigate("/productList")
-  }
+    navigate("/productList");
+  };
   const goToAccount = () => {
-    navigate("/account")
-  }
+    navigate("/account");
+  };
   const goToBroadcast = () => {
-    navigate("/broadcast")
-  }
+    navigate("/broadcast");
+  };
   return (
     <div>
       <Stack
@@ -59,40 +58,58 @@ const TopNavigation = () => {
         pb={2}
         pt={2}
         spacing={2}
-        sx={{ backgroundColor: "white", borderRadius: 2, border: 1, borderColor: '#dadada' }}
+        sx={{
+          backgroundColor: "white",
+          borderRadius: 2,
+          border: 1,
+          borderColor: "#dadada",
+        }}
       >
         <Typography sx={{ color: "black" }}>admin</Typography>
-        <Stack direction={"row"} alignItems={"center"} spacing={1} >
+        <Stack direction={"row"} alignItems={"center"} spacing={1}>
           {matches && (
             <Divider orientation="vertical" variant="middle" flexItem />
           )}
+
           <Switch defaultChecked size="small" color="success" />
           <IconButton onClick={goToBroadcast}>
-          <BroadcastOnHomeOutlinedIcon sx={{ fontSize: 18, color: '#2e2e2e' }} />
+            <BroadcastOnHomeOutlinedIcon
+              sx={{ fontSize: 18, color: "#2e2e2e" }}
+            />
           </IconButton>
           <IconButton onClick={goToProductList}>
-          <InventoryOutlinedIcon onClick={goToProductList} sx={{ fontSize: 18, color: '#2e2e2e' }} />
+            <InventoryOutlinedIcon
+              onClick={goToProductList}
+              sx={{ fontSize: 18, color: "#2e2e2e" }}
+            />
           </IconButton>
-          
+
           <IconButton onClick={goToAddProduct}>
-          <QrCodeScannerOutlinedIcon onClick={goToAddProduct} sx={{ fontSize: 18, color: '#2e2e2e' }} />
+            <QrCodeScannerOutlinedIcon
+              onClick={goToAddProduct}
+              sx={{ fontSize: 18, color: "#2e2e2e" }}
+            />
           </IconButton>
-          
+
           {!matches && (
             <IconButton onClick={goToHome}>
-            <MenuIcon  sx={{ fontSize: 18 }} />
+              <MenuIcon sx={{ fontSize: 18 }} />
             </IconButton>
           )}
           {matches && (
             <Divider orientation="vertical" variant="middle" flexItem />
           )}
           {matches && (
-            <Avatar onClick={goToAccount} sx={{ width: 30, height: 30 }} alt="Cindy Baker" src="https://images.freeimages.com/clg/istock/previews/1026/102672691-animal-emotion-avatar-vector-icon.jpg" />
+            <Avatar
+              onClick={goToAccount}
+              sx={{ width: 30, height: 30 }}
+              alt="Cindy Baker"
+              src="https://images.freeimages.com/clg/istock/previews/1026/102672691-animal-emotion-avatar-vector-icon.jpg"
+            />
           )}
         </Stack>
       </Stack>
     </div>
-
-  )
-}
-export default TopNavigation
+  );
+};
+export default TopNavigation;
