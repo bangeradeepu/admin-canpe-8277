@@ -1,9 +1,253 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { QRCodeCanvas } from "qrcode.react";
+import Barcode from "react-barcode";
+import dayjs from "dayjs";
+import {
+  Typography,
+  Card,
+  CardContent,
+  Button,
+  CircularProgress,
+  Stack,
+  Box,
+  Divider,
+  IconButton,
+  Switch
+} from "@mui/material";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import EditIcon from "@mui/icons-material/Edit";
+import UpdateIcon from "@mui/icons-material/Update";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import ProductionQuantityLimitsOutlinedIcon from "@mui/icons-material/ProductionQuantityLimitsOutlined";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 const ViewProduct = () => {
-  return (
-    <div>ViewProduct</div>
-  )
-}
+  const { id } = useParams();
+  const matches = useMediaQuery('(min-width:600px)');
+  const [productData, setProductData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-export default ViewProduct
+  useEffect(() => {
+    console.log("Product ID:", id);
+    getProduct();
+  }, [id]);
+
+  const getProduct = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/products/${id}`
+      );
+      console.log(response.data.product);
+      setProductData(response.data.product);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="80vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!productData) {
+    return (
+      <Typography variant="h6" textAlign="center" mt={4} color="error">
+        Product not found!
+      </Typography>
+    );
+  }
+
+  return (
+    <Stack sx={{ p: 1 }} spacing={2}>
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+      >
+        <Typography variant="h6">Product Details</Typography>
+        <Stack direction="row" spacing={1} justifyContent="center" alignItems={'center'}>
+          <IconButton sx={{ color: "green" }}>
+            <ProductionQuantityLimitsOutlinedIcon />
+          </IconButton>
+          <IconButton>
+            <EditIcon />
+          </IconButton>
+          <IconButton sx={{ color: "#D84040" }}>
+            <DeleteOutlineOutlinedIcon />
+          </IconButton>
+        </Stack>
+      </Stack>
+      <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+        {true ? (
+          <Stack direction={"row"} alignItems={"center"}>
+            <FiberManualRecordIcon sx={{ color: "#3D8D7A", fontSize: 14 }} />
+            <Typography
+              sx={{ color: "#3D8D7A", fontSize: 14, fontWeight: 500 }}
+            >
+              Visible
+            </Typography>
+          </Stack>
+        ) : (
+          <Stack direction={"row"} alignItems={"center"}>
+            <FiberManualRecordIcon sx={{ color: "#D84040", fontSize: 14 }} />
+            <Typography
+              sx={{ color: "#D84040", fontSize: 14, fontWeight: 500 }}
+            >
+              Disabled
+            </Typography>
+          </Stack>
+        )}
+                     <Switch defaultChecked size="small" color="success" />
+
+      </Stack>
+      {/* Product Header */}
+      <Stack direction={!matches ? 'column' : 'row'} spacing={2}>
+        <Stack>
+          <img
+            src={productData.productImage}
+            alt={productData.productName}
+            style={{
+              width: 300,
+              height: 300,
+              objectFit: "cover",
+              borderRadius: 8,
+            }}
+          />
+        </Stack>
+        <Stack>
+          <Stack direction={"row"} spacing={4} mb={2}>
+            <QRCodeCanvas value={productData.barcode.toString()} size={100} />
+            <Barcode
+              value={productData.barcode.toString()}
+              width={1.5}
+              height={50}
+            />
+          </Stack>
+          <Typography sx={{ fontSize: 18, fontWeight: 500, color: "#2e2e2e" }}>
+            {productData.productName}
+          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="textSecondary">
+            SKU: {productData.sku}
+          </Typography>
+          <Stack sx={{ mt: 1 }}>
+            <Stack>
+              <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+                Description
+              </Typography>
+              <Typography sx={{ fontSize: 14 }}>
+                {productData.description}
+              </Typography>
+            </Stack>
+          </Stack>
+          <Stack sx={{ mt: 1 }}>
+            <Stack>
+              <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+                Unit
+              </Typography>
+              <Typography sx={{ fontSize: 14 }}>
+                {productData.unit?.unitValue}&nbsp;
+                {productData.unit?.unitName}
+              </Typography>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Stack>
+      <Divider />
+
+      <Stack>
+        <div className="row">
+          <div className="col-md-4 mb-2">
+            <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+              Product Cost (Purchase Price)
+            </Typography>
+            <Typography sx={{ fontSize: 16, fontWeight: 600, color: "orange" }}>
+              ₹{productData.productCost}
+            </Typography>
+          </div>
+          <div className="col-md-4 mb-2">
+            <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+              Product Price (Display Price)
+            </Typography>
+            <Typography sx={{ fontSize: 16, fontWeight: 600, color: "green" }}>
+              ₹{productData.productPrice}
+            </Typography>
+          </div>
+          <div className="col-md-4 mb-2">
+            <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+              MRP (Maximum Retail Price)
+            </Typography>
+            <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
+              ₹{productData.productMrp}
+            </Typography>
+          </div>
+        </div>
+      </Stack>
+
+      <Stack>
+        <div className="row">
+          <div className="col-md-4 mb-2">
+            <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+              Category
+            </Typography>
+            <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
+              {productData.category?.categoryName}
+            </Typography>
+          </div>
+          <div className="col-md-4 mb-2">
+            <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+              Warehouse
+            </Typography>
+            <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
+              {productData.warehouse?.warehouseName}
+            </Typography>
+          </div>
+          <div className="col-md-4 mb-2">
+            <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+              Stock Quantity
+            </Typography>
+            <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
+              {productData.productQuantity}
+            </Typography>
+          </div>
+        </div>
+      </Stack>
+      <Divider />
+      <Stack>
+        <Stack>
+          <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+            Created On
+          </Typography>
+          <Typography sx={{ fontSize: 14 }}>
+            {dayjs(productData.createdAt).format("YYYY-MM-DD HH:mm")}
+          </Typography>
+        </Stack>
+        <Stack mt={2}>
+          <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+            Modified On
+          </Typography>
+          <Typography sx={{ fontSize: 14 }}>
+            {dayjs(productData.modifiedAt).format("YYYY-MM-DD HH:mm")}
+          </Typography>
+        </Stack>
+      </Stack>
+     <Stack direction={'row'} justifyContent={'flex-end'}>
+     <Typography sx={{fontSize:10,color:'#aeaeae'}}>{productData._id}</Typography>
+     </Stack>
+    </Stack>
+  );
+};
+
+export default ViewProduct;

@@ -72,6 +72,7 @@ const AddBarcodeProduct = () => {
     unitValue: "",
     productImage: "",
     description:"",
+    productMrp:"",
   });
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -85,10 +86,21 @@ const AddBarcodeProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+  
+    // Allow empty input for smooth editing
+    if (value === "") {
+      setProduct((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      return;
+    }
+  
+    // Convert to number and prevent negative values
     setProduct((prev) => ({
       ...prev,
-      [name]: ['productCost', 'productPrice', 'productQuantity'].includes(name)
-        ? Number(value)
+      [name]: ["productCost", "productPrice", "productQuantity", "barcode", "productMrp"].includes(name)
+        ? Math.max(0, Number(value)) // Prevents negative numbers
         : value,
     }));
   };
@@ -306,6 +318,19 @@ const AddBarcodeProduct = () => {
                 required
               />
             </div>
+            <div className="col-md-6">
+                          <TextField
+                            fullWidth
+                            label="Product MRP"
+                            type="number"
+                            name="productMrp"
+                            value={product.productMrp}
+                            onChange={handleChange}
+                            margin="normal"
+                            size="small"
+                            required
+                          />
+                        </div>
             <div className="col-md-6">
               <TextField
                 fullWidth
