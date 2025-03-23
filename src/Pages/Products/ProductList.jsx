@@ -25,6 +25,10 @@ const ProductList = () => {
     navigate(`/viewProduct/${id}`);
   };
 
+  const handleEditProduct =(id) => {
+    navigate(`/editProduct/${id}`);
+  }
+
   useEffect(() => {
     getData();
   }, []);
@@ -84,9 +88,9 @@ const ProductList = () => {
                   <TableCell sx={{ fontSize: "0.8rem" }}>{product.warehouse?.warehouseName}</TableCell>
                   <TableCell sx={{ fontSize: "0.8rem" }}>
                     <Stack direction={'row'} spacing={1}>
-                    <DeleteIcon  fontSize="small" onClick={() => handleDelete(product._id)} sx={{ cursor: "pointer",color:'#2e2e2e' }} />
+                    <DeleteIcon  fontSize="small" onClick={() => handleDelete(product._id)} sx={{ cursor: "pointer",color:'#2e2e2e' }}  />
                       <VisibilityOutlinedIcon fontSize="small" sx={{cursor:'pointer',color:'#2e2e2e'}} onClick={(e) => handleViewProduct(product._id)} />
-                      <DriveFileRenameOutlineOutlinedIcon fontSize="small"sx={{cursor:'pointer',color:'#2e2e2e'}} />
+                      <DriveFileRenameOutlineOutlinedIcon fontSize="small"sx={{cursor:'pointer',color:'#2e2e2e'}} onClick={(e) => handleEditProduct(product._id)} />
                     </Stack>
                   </TableCell>
                 </TableRow>

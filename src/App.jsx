@@ -31,6 +31,7 @@ import MapSettings from "./Pages/PosSettings/MapSettings";
 import Broadcast from "./Pages/PosSettings/Broadcast";
 import StatusIndicator from "./Components/StatusIndicator";
 import ViewProduct from "./Pages/Products/ViewProduct";
+import EditProduct from "./Pages/Products/EditProduct";
 const App = () => {
   const matches = useMediaQuery('(min-width:600px)');
   
@@ -69,6 +70,7 @@ const App = () => {
               <Route path="/mapSetting" element={<MapSettings />} />
               <Route path="/broadcast" element={<Broadcast />} />
               <Route path="/viewProduct/:id" element={<ViewProduct />} />
+              <Route path="/editProduct/:id" element={<EditProduct />} />
             </Routes>
             </Stack>
           </Stack>

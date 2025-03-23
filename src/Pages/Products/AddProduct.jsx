@@ -438,6 +438,7 @@ const AddProduct = () => {
             variant="contained"
             fullWidth
             sx={{
+              textTransform:'none',
               mt: 2,
               backgroundColor: "#000000",
               "&:hover": { backgroundColor: "#333333" },

@@ -23,9 +23,14 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ProductionQuantityLimitsOutlinedIcon from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { useNavigate } from "react-router-dom";
 
 const ViewProduct = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const handleEditProduct =() => {
+    navigate(`/editProduct/${id}`);
+  }
   const matches = useMediaQuery('(min-width:600px)');
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -82,7 +87,7 @@ const ViewProduct = () => {
           <IconButton sx={{ color: "green" }}>
             <ProductionQuantityLimitsOutlinedIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={()=>handleEditProduct()}>
             <EditIcon />
           </IconButton>
           <IconButton sx={{ color: "#D84040" }}>
