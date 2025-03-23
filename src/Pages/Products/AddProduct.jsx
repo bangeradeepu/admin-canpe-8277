@@ -14,8 +14,10 @@ import { storage } from "../../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
+import {useNavigate} from 'react-router-dom';
 
 const AddProduct = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     getCategory();
     getWarehouse();
@@ -159,9 +161,9 @@ const AddProduct = () => {
   const uploadImage = async () => {
     const croppedBlob = await getCroppedImage();
     if (!croppedBlob) return "";
-
+    const randomTenDigitNumber = Math.floor(1000000000 + Math.random() * 9000000000);
     setUploading(true);
-    const storageRef = ref(storage, `canpe-product-images/${Date.now()}.jpg`);
+    const storageRef = ref(storage, `canpe-product-images/${randomTenDigitNumber}.jpg`);
     const uploadTask = uploadBytesResumable(storageRef, croppedBlob);
 
     return new Promise((resolve, reject) => {
@@ -212,6 +214,7 @@ const AddProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
+        productMrp:"",
       });
 
       setImageSrc(null);

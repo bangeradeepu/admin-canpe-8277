@@ -3,6 +3,8 @@ import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
+import { ref, deleteObject } from "firebase/storage"; 
+import { storage } from "../../firebase/firebase";
 import {
   Table,
   TableBody,
@@ -14,8 +16,10 @@ import {
   Typography,
   Box,
   Stack,
+  Button
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -45,23 +49,34 @@ const ProductList = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, imageUrl) => {
     try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/products/${id}`
-      );
-      console.log("Success Deleted", response);
-      getData();
+      // Delete image from Firebase Storage if URL exists
+        if(!imageUrl === 'https://placehold.jp/50x50.png'){
+              const imageRef = ref(storage, imageUrl);
+              await deleteObject(imageRef);
+              console.log("Image deleted from Firebase");
+            }
+        
+  
+      // Delete product from API
+      const response = await axios.delete(`${import.meta.env.VITE_API_URL}/products/${id}`);
+      console.log("Product deleted successfully", response);
+      
+      getData(); // Refresh the data after deletion
     } catch (error) {
-      console.error(error);
+      console.error("Error deleting product:", error);
     }
   };
 
   return (
     <Stack p={1}>
-      <Typography variant="h6">
-        Product List
-      </Typography>
+     <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+         <Typography variant="h5" gutterBottom>
+             Add Product
+           </Typography>
+           <Button onClick={(e) => navigate('/addProduct')} size="small" sx={{textTransform:'none'}} startIcon={<AddIcon />}>Add Product</Button>
+         </Stack>
 
     
         <Table size="small">
@@ -88,7 +103,7 @@ const ProductList = () => {
                   <TableCell sx={{ fontSize: "0.8rem" }}>{product.warehouse?.warehouseName}</TableCell>
                   <TableCell sx={{ fontSize: "0.8rem" }}>
                     <Stack direction={'row'} spacing={1}>
-                    <DeleteIcon  fontSize="small" onClick={() => handleDelete(product._id)} sx={{ cursor: "pointer",color:'#2e2e2e' }}  />
+                    <DeleteIcon  fontSize="small" onClick={() => handleDelete(product._id,product.productImage)} sx={{ cursor: "pointer",color:'#2e2e2e' }}  />
                       <VisibilityOutlinedIcon fontSize="small" sx={{cursor:'pointer',color:'#2e2e2e'}} onClick={(e) => handleViewProduct(product._id)} />
                       <DriveFileRenameOutlineOutlinedIcon fontSize="small"sx={{cursor:'pointer',color:'#2e2e2e'}} onClick={(e) => handleEditProduct(product._id)} />
                     </Stack>

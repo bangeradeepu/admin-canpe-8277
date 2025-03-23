@@ -15,7 +15,7 @@ import { storage } from "../../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -76,28 +76,29 @@ const EditProduct = () => {
     unitValue: "",
     productImage: "",
     description: "",
-    productMrp:'',
+    productMrp: "",
   });
-
 
   const fetchProductById = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/products/${id}`
+      );
       const productData = response.data.product;
 
       setProduct({
         ...productData,
-        category: productData.category?.categoryId || "", 
-        warehouse: productData.warehouse?.warehouseId || "", 
-        unit: productData.unit?.unitId || "", 
-        unitValue:productData.unit?.unitValue || "", 
+        category: productData.category?.categoryId || "",
+        warehouse: productData.warehouse?.warehouseId || "",
+        unit: productData.unit?.unitId || "",
+        unitValue: productData.unit?.unitValue || "",
       });
 
       console.log(productData);
     } catch (error) {
-      console.error('Product not found:', error);
+      console.error("Product not found:", error);
     }
-};
+  };
 
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -108,7 +109,7 @@ const EditProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Allow empty input for smooth editing
     if (value === "") {
       setProduct((prev) => ({
@@ -117,16 +118,21 @@ const EditProduct = () => {
       }));
       return;
     }
-  
+
     // Convert to number and prevent negative values
     setProduct((prev) => ({
       ...prev,
-      [name]: ["productCost", "productPrice", "productQuantity", "barcode", "productMrp"].includes(name)
+      [name]: [
+        "productCost",
+        "productPrice",
+        "productQuantity",
+        "barcode",
+        "productMrp",
+      ].includes(name)
         ? Math.max(0, Number(value)) // Prevents negative numbers
         : value,
     }));
   };
-  
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -213,12 +219,14 @@ const EditProduct = () => {
     try {
       let imageUrl = "https://placehold.jp/50x50.png"; // Default placeholder
 
-      if (imageSrc) {
-        imageUrl = await uploadImage(); // Upload if an image is selected
+      if (!imageSrc) {
+        imageUrl = product.productImage;
+      } else {
+        imageUrl = await uploadImage();
       }
 
       const finalProduct = { ...product, productImage: imageUrl };
-
+      console.log("final apyload", finalProduct);
       await axios.put(
         `${import.meta.env.VITE_API_URL}/products/${id}`,
         finalProduct
@@ -241,7 +249,7 @@ const EditProduct = () => {
 
       setImageSrc(null);
       setCroppedImage(null);
-      navigate('/productList')
+      navigate("/productList");
     } catch (error) {
       console.error("Error adding product:", error);
 
@@ -464,7 +472,7 @@ const EditProduct = () => {
             variant="contained"
             fullWidth
             sx={{
-              textTransform:'none',
+              textTransform: "none",
               mt: 2,
               backgroundColor: "#000000",
               "&:hover": { backgroundColor: "#333333" },

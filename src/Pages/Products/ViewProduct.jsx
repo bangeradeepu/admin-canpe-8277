@@ -4,6 +4,8 @@ import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
 import Barcode from "react-barcode";
 import dayjs from "dayjs";
+import { ref, deleteObject } from "firebase/storage"; 
+import { storage } from "../../firebase/firebase";
 import {
   Typography,
   Card,
@@ -54,6 +56,24 @@ const ViewProduct = () => {
     }
   };
 
+  const handleDelete = async (id, imageUrl) => {
+    try {
+      // Delete image from Firebase Storage if URL exists
+      if(!imageUrl === 'https://placehold.jp/50x50.png'){
+        const imageRef = ref(storage, imageUrl);
+        await deleteObject(imageRef);
+        console.log("Image deleted from Firebase");
+      }
+  
+      // Delete product from API
+      const response = await axios.delete(`${import.meta.env.VITE_API_URL}/products/${id}`);
+      console.log("Product deleted successfully", response);
+      navigate(`/productList/`);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
   if (loading) {
     return (
       <Box
@@ -90,7 +110,7 @@ const ViewProduct = () => {
           <IconButton onClick={()=>handleEditProduct()}>
             <EditIcon />
           </IconButton>
-          <IconButton sx={{ color: "#D84040" }}>
+          <IconButton onClick={() => handleDelete(productData._id,productData.productImage)} sx={{ color: "#D84040" }}>
             <DeleteOutlineOutlinedIcon />
           </IconButton>
         </Stack>
