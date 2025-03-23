@@ -268,14 +268,14 @@ const AddBarcodeProduct = () => {
   };
 
   return (
-    <Stack>
+    <Stack  sx={{p:1}}>
       {barcodeScanned ? (
         <Stack>
           <Typography variant="h5" gutterBottom>
             Add Product
           </Typography>
 
-          <Box sx={{p:1}}>
+          <Box>
             <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-md-6">
