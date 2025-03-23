@@ -14,7 +14,7 @@ import { storage } from "../../firebase/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -73,7 +73,8 @@ const AddProduct = () => {
     unitValue: "",
     productImage: "",
     description: "",
-    productMrp:'',
+    productMrp: "",
+    pcs: "1",
   });
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -85,7 +86,7 @@ const AddProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Allow empty input for smooth editing
     if (value === "") {
       setProduct((prev) => ({
@@ -94,16 +95,22 @@ const AddProduct = () => {
       }));
       return;
     }
-  
+
     // Convert to number and prevent negative values
     setProduct((prev) => ({
       ...prev,
-      [name]: ["productCost", "productPrice", "productQuantity", "barcode", "productMrp"].includes(name)
+      [name]: [
+        "productCost",
+        "productPrice",
+        "productQuantity",
+        "barcode",
+        "productMrp",
+        "pcs",
+      ].includes(name)
         ? Math.max(0, Number(value)) // Prevents negative numbers
         : value,
     }));
   };
-  
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -161,9 +168,14 @@ const AddProduct = () => {
   const uploadImage = async () => {
     const croppedBlob = await getCroppedImage();
     if (!croppedBlob) return "";
-    const randomTenDigitNumber = Math.floor(1000000000 + Math.random() * 9000000000);
+    const randomTenDigitNumber = Math.floor(
+      1000000000 + Math.random() * 9000000000
+    );
     setUploading(true);
-    const storageRef = ref(storage, `canpe-product-images/${randomTenDigitNumber}.jpg`);
+    const storageRef = ref(
+      storage,
+      `canpe-product-images/${randomTenDigitNumber}.jpg`
+    );
     const uploadTask = uploadBytesResumable(storageRef, croppedBlob);
 
     return new Promise((resolve, reject) => {
@@ -214,7 +226,8 @@ const AddProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
-        productMrp:"",
+        productMrp: "",
+        pcs: "1",
       });
 
       setImageSrc(null);
@@ -354,6 +367,19 @@ const AddProduct = () => {
               </TextField>
             </div>
             <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="PCS"
+                type="number"
+                name="pcs"
+                value={product.pcs}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
+            </div>
+            <div className="col-md-6">
               <div className="row">
                 <div className="col-md-6">
                   <TextField
@@ -441,7 +467,7 @@ const AddProduct = () => {
             variant="contained"
             fullWidth
             sx={{
-              textTransform:'none',
+              textTransform: "none",
               mt: 2,
               backgroundColor: "#000000",
               "&:hover": { backgroundColor: "#333333" },

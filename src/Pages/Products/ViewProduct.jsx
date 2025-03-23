@@ -4,7 +4,7 @@ import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
 import Barcode from "react-barcode";
 import dayjs from "dayjs";
-import { ref, deleteObject } from "firebase/storage"; 
+import { ref, deleteObject } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
 import {
   Typography,
@@ -16,9 +16,9 @@ import {
   Box,
   Divider,
   IconButton,
-  Switch
+  Switch,
 } from "@mui/material";
-import useMediaQuery from '@mui/material/useMediaQuery';
+import useMediaQuery from "@mui/material/useMediaQuery";
 import EditIcon from "@mui/icons-material/Edit";
 import UpdateIcon from "@mui/icons-material/Update";
 import AddIcon from "@mui/icons-material/Add";
@@ -30,10 +30,10 @@ import { useNavigate } from "react-router-dom";
 const ViewProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const handleEditProduct =() => {
+  const handleEditProduct = () => {
     navigate(`/editProduct/${id}`);
-  }
-  const matches = useMediaQuery('(min-width:600px)');
+  };
+  const matches = useMediaQuery("(min-width:600px)");
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -59,14 +59,16 @@ const ViewProduct = () => {
   const handleDelete = async (id, imageUrl) => {
     try {
       // Delete image from Firebase Storage if URL exists
-      if(!imageUrl === 'https://placehold.jp/50x50.png'){
+      if (!imageUrl === "https://placehold.jp/50x50.png") {
         const imageRef = ref(storage, imageUrl);
         await deleteObject(imageRef);
         console.log("Image deleted from Firebase");
       }
-  
+
       // Delete product from API
-      const response = await axios.delete(`${import.meta.env.VITE_API_URL}/products/${id}`);
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/products/${id}`
+      );
       console.log("Product deleted successfully", response);
       navigate(`/productList/`);
     } catch (error) {
@@ -103,19 +105,33 @@ const ViewProduct = () => {
         alignItems={"center"}
       >
         <Typography variant="h6">Product Details</Typography>
-        <Stack direction="row" spacing={1} justifyContent="center" alignItems={'center'}>
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="center"
+          alignItems={"center"}
+        >
           <IconButton sx={{ color: "green" }}>
             <ProductionQuantityLimitsOutlinedIcon />
           </IconButton>
-          <IconButton onClick={()=>handleEditProduct()}>
+          <IconButton onClick={() => handleEditProduct()}>
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => handleDelete(productData._id,productData.productImage)} sx={{ color: "#D84040" }}>
+          <IconButton
+            onClick={() =>
+              handleDelete(productData._id, productData.productImage)
+            }
+            sx={{ color: "#D84040" }}
+          >
             <DeleteOutlineOutlinedIcon />
           </IconButton>
         </Stack>
       </Stack>
-      <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+      >
         {true ? (
           <Stack direction={"row"} alignItems={"center"}>
             <FiberManualRecordIcon sx={{ color: "#3D8D7A", fontSize: 14 }} />
@@ -135,11 +151,10 @@ const ViewProduct = () => {
             </Typography>
           </Stack>
         )}
-                     <Switch defaultChecked size="small" color="success" />
-
+        <Switch defaultChecked size="small" color="success" />
       </Stack>
       {/* Product Header */}
-      <Stack direction={!matches ? 'column' : 'row'} spacing={2}>
+      <Stack direction={!matches ? "column" : "row"} spacing={2}>
         <Stack>
           <img
             src={productData.productImage}
@@ -178,15 +193,25 @@ const ViewProduct = () => {
             </Stack>
           </Stack>
           <Stack sx={{ mt: 1 }}>
-            <Stack>
-              <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+            <div className="row">
+                <div className="col-md-6 mb-2">
+                <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
                 Unit
               </Typography>
               <Typography sx={{ fontSize: 14 }}>
                 {productData.unit?.unitValue}&nbsp;
                 {productData.unit?.unitName}
               </Typography>
-            </Stack>
+                </div>
+                <div className="col-md-6 mb-2">
+                <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
+                PCS
+              </Typography>
+              <Typography sx={{ fontSize: 14 }}>
+                {productData.pcs}
+              </Typography>
+                </div>
+            </div>
           </Stack>
         </Stack>
       </Stack>
@@ -268,9 +293,11 @@ const ViewProduct = () => {
           </Typography>
         </Stack>
       </Stack>
-     <Stack direction={'row'} justifyContent={'flex-end'}>
-     <Typography sx={{fontSize:10,color:'#aeaeae'}}>{productData._id}</Typography>
-     </Stack>
+      <Stack direction={"row"} justifyContent={"flex-end"}>
+        <Typography sx={{ fontSize: 10, color: "#aeaeae" }}>
+          {productData._id}
+        </Typography>
+      </Stack>
     </Stack>
   );
 };

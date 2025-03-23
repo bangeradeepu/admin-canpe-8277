@@ -84,6 +84,7 @@ const EditProduct = () => {
     productImage: "",
     description: "",
     productMrp: "",
+    pcs: "1",
   });
 
   const fetchProductById = async () => {
@@ -135,6 +136,7 @@ const EditProduct = () => {
         "productQuantity",
         "barcode",
         "productMrp",
+        "pcs",
       ].includes(name)
         ? Math.max(0, Number(value)) // Prevents negative numbers
         : value,
@@ -252,6 +254,7 @@ const EditProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
+        pcs: "1",
       });
 
       setImageSrc(null);
@@ -403,6 +406,19 @@ const EditProduct = () => {
                   </MenuItem>
                 ))}
               </TextField>
+            </div>
+            <div className="col-md-6">
+              <TextField
+                fullWidth
+                label="PCS"
+                type="number"
+                name="pcs"
+                value={product.pcs}
+                onChange={handleChange}
+                margin="normal"
+                size="small"
+                required
+              />
             </div>
             <div className="col-md-6">
               <div className="row">
