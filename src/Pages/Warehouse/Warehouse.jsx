@@ -104,7 +104,7 @@ const Warehouse = () => {
     <Box>
       <Stack direction={'row'} alignItems={'center'}  spacing={1}>
         <BackButton />
-      <Typography variant="h5" gutterBottom>
+      <Typography sx={{fontSize:20,fontWeight:500}} gutterBottom>
         Warehouse Management
       </Typography>
       </Stack>

@@ -289,7 +289,7 @@ const EditProduct = () => {
     <Stack sx={{ p: 1 }}>
         <Stack direction={'row'} alignItems={'center'}  spacing={1}>
             <BackButton />
-        <Typography variant="h5" gutterBottom>
+        <Typography sx={{fontSize:20,fontWeight:500}} gutterBottom>
         Edit Product
       </Typography>
         </Stack>

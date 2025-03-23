@@ -146,7 +146,7 @@ const MapSettings = () => {
         <Stack spacing={2}>
             <Stack direction={'row'} alignItems={'center'}  spacing={1}>
                 <BackButton />
-            <Typography variant="h5" gutterBottom>
+            <Typography sx={{fontSize:20,fontWeight:500}} gutterBottom>
                 Map Settings
             </Typography>
             </Stack>

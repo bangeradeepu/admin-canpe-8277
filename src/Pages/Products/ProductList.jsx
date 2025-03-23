@@ -75,7 +75,7 @@ const ProductList = () => {
      <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
       <Stack direction={'row'} alignItems={'center'}  spacing={1}>
         <BackButton />
-      <Typography variant="h5" gutterBottom>
+      <Typography sx={{fontSize:20,fontWeight:500}} gutterBottom>
              Product List
            </Typography>
       </Stack>

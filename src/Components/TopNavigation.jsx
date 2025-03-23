@@ -23,6 +23,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
 import BroadcastOnHomeOutlinedIcon from "@mui/icons-material/BroadcastOnHomeOutlined";
+import ProductionQuantityLimitsOutlinedIcon from '@mui/icons-material/ProductionQuantityLimitsOutlined';
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 

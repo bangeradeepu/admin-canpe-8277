@@ -8,6 +8,7 @@ import {
   Paper,
   CircularProgress,
   Stack,
+  IconButton
 } from "@mui/material";
 import Cropper from "react-easy-crop";
 import { storage } from "../../firebase/firebase";
@@ -16,6 +17,7 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../Components/BackButton";
+import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -246,12 +248,17 @@ const AddProduct = () => {
 
   return (
     <Stack sx={{ p: 1 }}>
-      <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+     <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
+     <Stack direction={'row'} alignItems={'center'}  spacing={1}>
         <BackButton />
-        <Typography variant="h5" gutterBottom>
+        <Typography sx={{fontSize:20,fontWeight:500}} gutterBottom>
         Add Product
       </Typography>
       </Stack>
+      <IconButton onClick={() => navigate('/barcodeProduct')}>
+<QrCodeScannerOutlinedIcon />
+      </IconButton>
+     </Stack>
      
       <Box>
         <form onSubmit={handleSubmit}>

@@ -107,7 +107,7 @@ const ViewProduct = () => {
       >
         <Stack direction={'row'} alignItems={'center'}  spacing={1}>
             <BackButton />
-        <Typography variant="h6">Product Details</Typography>
+        <Typography sx={{fontSize:20,fontWeight:500}}>Product Details</Typography>
         </Stack>
        
         <Stack
