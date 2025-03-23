@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Stack, Typography, Box } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import axios from "axios";
+import BackButton from "../../Components/BackButton";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const GOOGLE_MAPS_API_KEY = "AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao"; // Replace with your API key
@@ -143,9 +144,13 @@ const MapSettings = () => {
 
     return (
         <Stack spacing={2}>
+            <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+                <BackButton />
             <Typography variant="h5" gutterBottom>
                 Map Settings
             </Typography>
+            </Stack>
+           
             <Stack sx={{ p: 2, border: 1, borderColor: "#dadada", borderRadius: 2 }}>
                 <div className="row">
                     <div className="col-md-6 mb-3">

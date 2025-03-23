@@ -22,6 +22,7 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { enqueueSnackbar } from "notistack";
+import BackButton from "../../Components/BackButton";
 
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -101,9 +102,13 @@ const Category = () => {
 
   return (
     <Box>
+      <Stack  direction={'row'} alignItems={'center'}  spacing={1}>
+        <BackButton />
       <Typography variant="h5" gutterBottom>
         Category Management
       </Typography>
+      </Stack>
+     
       <TextField
         label="Category Name"
         variant="outlined"

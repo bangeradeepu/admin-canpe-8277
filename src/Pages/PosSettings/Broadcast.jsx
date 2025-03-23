@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Stack, Typography, Box } from "@mui/material";
 import axios from "axios";
 import { enqueueSnackbar } from 'notistack'
+import BackButton from "../../Components/BackButton";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -54,9 +55,13 @@ const Broadcast = () => {
     return (
         <Stack spacing={2}>
            <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-           <Typography variant="h5" gutterBottom>
+            <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+                <BackButton />
+            <Typography variant="h5" gutterBottom>
                 Broadcast Settings
             </Typography>
+            </Stack>
+         
             {broadcast && (
             <img src="https://media.lordicon.com/icons/wired/lineal/1043-signal-streams.gif" width={40} alt="" />
 

@@ -22,6 +22,7 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { enqueueSnackbar } from "notistack";
+import BackButton from "../../Components/BackButton";
 
 const Warehouse = () => {
   const [warehouseName, setWarehouseName] = useState("");
@@ -101,9 +102,13 @@ const Warehouse = () => {
 
   return (
     <Box>
+      <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+        <BackButton />
       <Typography variant="h5" gutterBottom>
         Warehouse Management
       </Typography>
+      </Stack>
+    
       <TextField
         label="Warehouse Name"
         variant="outlined"

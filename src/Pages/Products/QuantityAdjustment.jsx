@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import BarcodeScanner from "../../Components/BarcodeScanner";
+import BackButton from "../../Components/BackButton";
 
 const QuantityAdjustment = () => {
     const [products, setProducts] = useState([]);
@@ -98,9 +99,13 @@ const QuantityAdjustment = () => {
             ) : (
                 <>
                     <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                        <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+                            <BackButton />
                         <Typography variant="h5" gutterBottom>
                             Quantity Adjustment
                         </Typography>
+                        </Stack>
+                        
                         <Button onClick={() => navigate('/addProduct')} size="small" sx={{ textTransform: 'none' }} startIcon={<AddIcon />}>
                             Add Product
                         </Button>

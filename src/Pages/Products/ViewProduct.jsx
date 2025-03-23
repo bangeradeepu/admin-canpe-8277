@@ -26,6 +26,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import ProductionQuantityLimitsOutlinedIcon from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../Components/BackButton";
 
 const ViewProduct = () => {
   const { id } = useParams();
@@ -104,7 +105,11 @@ const ViewProduct = () => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
+        <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+            <BackButton />
         <Typography variant="h6">Product Details</Typography>
+        </Stack>
+       
         <Stack
           direction="row"
           spacing={1}

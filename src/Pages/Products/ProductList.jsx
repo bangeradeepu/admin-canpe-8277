@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import BackButton from "../../Components/BackButton";
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -72,9 +73,13 @@ const ProductList = () => {
   return (
     <Stack p={1}>
      <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-         <Typography variant="h5" gutterBottom>
+      <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+        <BackButton />
+      <Typography variant="h5" gutterBottom>
              Product List
            </Typography>
+      </Stack>
+        
            <Button onClick={(e) => navigate('/addProduct')} size="small" sx={{textTransform:'none'}} startIcon={<AddIcon />}>Add Product</Button>
          </Stack>
 

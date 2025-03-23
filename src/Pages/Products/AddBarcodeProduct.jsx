@@ -15,6 +15,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import BarcodeScanner from "../../Components/BarcodeScanner";
 import { enqueueSnackbar } from "notistack";
+import BackButton from "../../Components/BackButton";
 
 const AddBarcodeProduct = () => {
   useEffect(() => {
@@ -271,9 +272,13 @@ const AddBarcodeProduct = () => {
     <Stack  sx={{p:1}}>
       {barcodeScanned ? (
         <Stack>
+          <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+            <BackButton />
           <Typography variant="h5" gutterBottom>
             Add Product
           </Typography>
+          </Stack>
+         
 
           <Box>
             <form onSubmit={handleSubmit}>

@@ -16,6 +16,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../Components/BackButton";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -286,9 +287,13 @@ const EditProduct = () => {
 
   return (
     <Stack sx={{ p: 1 }}>
-      <Typography variant="h5" gutterBottom>
+        <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+            <BackButton />
+        <Typography variant="h5" gutterBottom>
         Edit Product
       </Typography>
+        </Stack>
+      
       <Box>
         <form onSubmit={handleSubmit}>
           <div className="row">
