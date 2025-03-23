@@ -275,7 +275,7 @@ const AddBarcodeProduct = () => {
             Add Product
           </Typography>
 
-          <Box>
+          <Box sx={{p:1}}>
             <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-md-6">
