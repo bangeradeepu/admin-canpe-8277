@@ -1,0 +1,56 @@
+{
+    "routes": [
+        {
+            "src": "/",
+            "dest": "/"
+        },
+        {
+            "src": "/addProduct",
+            "dest": "/"
+        },
+        {
+            "src": "/productList",
+            "dest": "/"
+        },
+        {
+            "src": "/barcodeProduct",
+            "dest": "/"
+        },
+        {
+            "src": "/category",
+            "dest": "/"
+        },
+        {
+            "src": "/warehouse",
+            "dest": "/"
+        },
+        {
+            "src": "/navigation",
+            "dest": "/"
+        },
+        {
+            "src": "/units",
+            "dest": "/"
+        },
+        {
+            "src": "/mapSetting",
+            "dest": "/"
+        },
+        {
+            "src": "/broadcast",
+            "dest": "/"
+        },
+        {
+            "src": "/viewProduct/(.*)",
+            "dest": "/"
+        },
+        {
+            "src": "/editProduct/(.*)",
+            "dest": "/"
+        },
+        {
+            "src": "/quantityAdjustment",
+            "dest": "/"
+        }
+    ]
+}
