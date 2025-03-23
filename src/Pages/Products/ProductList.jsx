@@ -73,7 +73,7 @@ const ProductList = () => {
     <Stack p={1}>
      <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
          <Typography variant="h5" gutterBottom>
-             Add Product
+             Product List
            </Typography>
            <Button onClick={(e) => navigate('/addProduct')} size="small" sx={{textTransform:'none'}} startIcon={<AddIcon />}>Add Product</Button>
          </Stack>

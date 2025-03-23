@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 const EditProduct = () => {
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     getCategory();
@@ -35,8 +36,10 @@ const EditProduct = () => {
       );
       console.log(response.data.category);
       setCategoryData(response.data.category);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -48,8 +51,10 @@ const EditProduct = () => {
       );
       console.log(response.data.warehouse);
       setWarehouse(response.data.warehouse);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -59,8 +64,10 @@ const EditProduct = () => {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/units`);
       console.log(response.data.units);
       setUnit(response.data.units);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -260,6 +267,19 @@ const EditProduct = () => {
       }
     }
   };
+
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="80vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Stack sx={{ p: 1 }}>
