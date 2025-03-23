@@ -163,7 +163,7 @@ const QuantityAdjustment = () => {
                 </>
             )}
             {/* Quantity Adjustment Modal */}
-            <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} fullWidth>
                 <DialogTitle>Product Quantity Details</DialogTitle>
                 <DialogContent>
                     {selectedProduct ? (
