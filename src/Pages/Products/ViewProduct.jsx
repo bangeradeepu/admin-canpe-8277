@@ -17,6 +17,11 @@ import {
   Divider,
   IconButton,
   Switch,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import EditIcon from "@mui/icons-material/Edit";
@@ -37,6 +42,10 @@ const ViewProduct = () => {
   const matches = useMediaQuery("(min-width:600px)");
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const [quantityUpdate, setQuantityUpdate] = useState("");
 
   useEffect(() => {
     console.log("Product ID:", id);
@@ -77,6 +86,41 @@ const ViewProduct = () => {
     }
   };
 
+  const fetchProductDetails = async (barcode) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/products/barcode/${barcode}`
+      );
+      console.log(response.data.product);
+      setSelectedProduct(response.data.product);
+      setIsModalOpen(true);
+      setQuantityUpdate(response.data.product?.productQuantity);
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
+  };
+
+  const updateQuantity = async (action) => {
+    if (!selectedProduct || quantityUpdate < 0) {
+      console.error("Invalid quantity update");
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/products/updateQuantity/${
+          selectedProduct.barcode
+        }`,
+        { productQuantity: quantityUpdate, action }
+      );
+
+      console.log("Update Success:", response.data);
+      getProduct(); // Refresh product list after update
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
+  };
   if (loading) {
     return (
       <Box
@@ -105,18 +149,23 @@ const ViewProduct = () => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Stack direction={'row'} alignItems={'center'}  spacing={1}>
-            <BackButton />
-        <Typography sx={{fontSize:20,fontWeight:500}}>Product Details</Typography>
+        <Stack direction={"row"} alignItems={"center"} spacing={1}>
+          <BackButton />
+          <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
+            Product Details
+          </Typography>
         </Stack>
-       
+
         <Stack
           direction="row"
           spacing={1}
           justifyContent="center"
           alignItems={"center"}
         >
-          <IconButton sx={{ color: "green" }}>
+          <IconButton
+            sx={{ color: "green" }}
+            onClick={() => fetchProductDetails(productData.barcode)}
+          >
             <ProductionQuantityLimitsOutlinedIcon />
           </IconButton>
           <IconButton onClick={() => handleEditProduct()}>
@@ -199,23 +248,21 @@ const ViewProduct = () => {
           </Stack>
           <Stack sx={{ mt: 1 }}>
             <div className="row">
-                <div className="col-md-6 mb-2">
+              <div className="col-md-6 mb-2">
                 <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
-                Unit
-              </Typography>
-              <Typography sx={{ fontSize: 14 }}>
-                {productData.unit?.unitValue}&nbsp;
-                {productData.unit?.unitName}
-              </Typography>
-                </div>
-                <div className="col-md-6 mb-2">
+                  Unit
+                </Typography>
+                <Typography sx={{ fontSize: 14 }}>
+                  {productData.unit?.unitValue}&nbsp;
+                  {productData.unit?.unitName}
+                </Typography>
+              </div>
+              <div className="col-md-6 mb-2">
                 <Typography sx={{ fontSize: 12, color: "#aeaeae" }}>
-                PCS
-              </Typography>
-              <Typography sx={{ fontSize: 14 }}>
-                {productData.pcs}
-              </Typography>
-                </div>
+                  PCS
+                </Typography>
+                <Typography sx={{ fontSize: 14 }}>{productData.pcs}</Typography>
+              </div>
             </div>
           </Stack>
         </Stack>
@@ -303,6 +350,73 @@ const ViewProduct = () => {
           {productData._id}
         </Typography>
       </Stack>
+      {/* Quantity Adjustment Modal */}
+      <Dialog
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        fullWidth
+      >
+        <DialogTitle>Product Quantity Details</DialogTitle>
+        <DialogContent>
+          {selectedProduct ? (
+            <Stack spacing={1}>
+              <Typography>
+                <strong>Product:</strong> {selectedProduct.productName}
+              </Typography>
+              <Typography>
+                <strong>Barcode:</strong> {selectedProduct.barcode}
+              </Typography>
+              <Typography>
+                <strong>Cost:</strong> ₹{selectedProduct.productCost}
+              </Typography>
+              <Typography>
+                <strong>Price:</strong> ₹{selectedProduct.productPrice}
+              </Typography>
+              <Typography>
+                <strong>Warehouse:</strong>{" "}
+                {selectedProduct.warehouse?.warehouseName}
+              </Typography>
+              <Typography>
+                <strong>Current Quantity:</strong>{" "}
+                {selectedProduct.productQuantity}
+              </Typography>
+              <TextField
+                size="small"
+                placeholder="Quantity"
+                value={quantityUpdate}
+                onChange={(e) => setQuantityUpdate(e.target.value)}
+                required
+              />
+            </Stack>
+          ) : (
+            <Typography>Loading...</Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsModalOpen(false)}>Close</Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => updateQuantity("sub")}
+          >
+            Subtraction
+          </Button>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={() => updateQuantity("add")}
+          >
+            Addition
+          </Button>
+          <Button
+            variant="outlined"
+            color=""
+            onClick={() => updateQuantity("adjust")}
+          >
+            Adjust
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   );
 };
