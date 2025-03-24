@@ -8,7 +8,9 @@ import {
   Paper,
   CircularProgress,
   Stack,
-  IconButton
+  IconButton,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import Cropper from "react-easy-crop";
 import { storage } from "../../firebase/firebase";
@@ -17,7 +19,7 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../Components/BackButton";
-import QrCodeScannerOutlinedIcon from '@mui/icons-material/QrCodeScannerOutlined';
+import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -77,6 +79,7 @@ const AddProduct = () => {
     productImage: "",
     description: "",
     productMrp: "",
+    mrpEnabled: true,
     pcs: "1",
   });
 
@@ -86,6 +89,10 @@ const AddProduct = () => {
   const [croppedImage, setCroppedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
+  const handleMrpCheckbox = (event) => {
+    setProduct({ ...product, mrpEnabled: event.target.checked });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -230,6 +237,7 @@ const AddProduct = () => {
         productImage: "",
         description: "",
         productMrp: "",
+        mrpEnabled: true,
         pcs: "1",
       });
 
@@ -248,18 +256,22 @@ const AddProduct = () => {
 
   return (
     <Stack sx={{ p: 1 }}>
-     <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-     <Stack direction={'row'} alignItems={'center'}  spacing={1}>
-        <BackButton />
-        <Typography sx={{fontSize:20,fontWeight:500}} gutterBottom>
-        Add Product
-      </Typography>
+      <Stack
+        direction={"row"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+      >
+        <Stack direction={"row"} alignItems={"center"} spacing={1}>
+          <BackButton />
+          <Typography sx={{ fontSize: 20, fontWeight: 500 }} gutterBottom>
+            Add Product
+          </Typography>
+        </Stack>
+        <IconButton onClick={() => navigate("/barcodeProduct")}>
+          <QrCodeScannerOutlinedIcon />
+        </IconButton>
       </Stack>
-      <IconButton onClick={() => navigate('/barcodeProduct')}>
-<QrCodeScannerOutlinedIcon />
-      </IconButton>
-     </Stack>
-     
+
       <Box>
         <form onSubmit={handleSubmit}>
           <div className="row">
@@ -324,7 +336,18 @@ const AddProduct = () => {
                 onChange={handleChange}
                 margin="normal"
                 size="small"
-                required
+              />
+            </div>
+            <div className="col-md-6 mt-2">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={product.mrpEnabled}
+                    onChange={handleMrpCheckbox}
+                    color="primary"
+                  />
+                }
+                label="Enable MRP"
               />
             </div>
             <div className="col-md-6">

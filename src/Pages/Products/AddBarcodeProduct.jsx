@@ -8,6 +8,8 @@ import {
   Paper,
   CircularProgress,
   Stack,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import Cropper from "react-easy-crop";
 import { storage } from "../../firebase/firebase";
@@ -74,6 +76,7 @@ const AddBarcodeProduct = () => {
     productImage: "",
     description: "",
     productMrp: "",
+    mrpEnabled: true,
     pcs: "1",
   });
 
@@ -84,6 +87,9 @@ const AddBarcodeProduct = () => {
   const [uploading, setUploading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [barcodeScanned, setBarcodeScanned] = useState("");
+  const handleMrpCheckbox = (event) => {
+    setProduct({ ...product, mrpEnabled: event.target.checked });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -252,6 +258,8 @@ const AddBarcodeProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
+        mrpEnabled: true,
+        productMrp: "",
         pcs: "1",
       });
 
@@ -269,16 +277,15 @@ const AddBarcodeProduct = () => {
   };
 
   return (
-    <Stack  sx={{p:1}}>
+    <Stack sx={{ p: 1 }}>
       {barcodeScanned ? (
         <Stack>
-          <Stack direction={'row'} alignItems={'center'}  spacing={1}>
+          <Stack direction={"row"} alignItems={"center"} spacing={1}>
             <BackButton />
-          <Typography sx={{fontSize:20,fontWeight:500}} gutterBottom>
-            Add Product
-          </Typography>
+            <Typography sx={{ fontSize: 20, fontWeight: 500 }} gutterBottom>
+              Add Product
+            </Typography>
           </Stack>
-         
 
           <Box>
             <form onSubmit={handleSubmit}>
@@ -344,6 +351,18 @@ const AddBarcodeProduct = () => {
                     margin="normal"
                     size="small"
                     required
+                  />
+                </div>
+                <div className="col-md-6 mt-2">
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={product.mrpEnabled}
+                        onChange={handleMrpCheckbox}
+                        color="primary"
+                      />
+                    }
+                    label="Enable MRP"
                   />
                 </div>
                 <div className="col-md-6">

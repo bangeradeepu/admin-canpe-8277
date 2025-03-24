@@ -8,6 +8,8 @@ import {
   Paper,
   CircularProgress,
   Stack,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import Cropper from "react-easy-crop";
@@ -85,8 +87,13 @@ const EditProduct = () => {
     productImage: "",
     description: "",
     productMrp: "",
+    mrpEnabled: true,
     pcs: "1",
   });
+
+  const handleMrpCheckbox = (event) => {
+    setProduct({ ...product, mrpEnabled: event.target.checked });
+  };
 
   const fetchProductById = async () => {
     try {
@@ -255,6 +262,7 @@ const EditProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
+        mrpEnabled: true,
         pcs: "1",
       });
 
@@ -358,9 +366,21 @@ const EditProduct = () => {
                 onChange={handleChange}
                 margin="normal"
                 size="small"
-                required
+                
               />
             </div>
+              <div className="col-md-6 mt-2">
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={product.mrpEnabled}
+                                onChange={handleMrpCheckbox}
+                                color="primary"
+                              />
+                            }
+                            label="Enable MRP"
+                          />
+                        </div>
             <div className="col-md-6">
               <TextField
                 fullWidth
