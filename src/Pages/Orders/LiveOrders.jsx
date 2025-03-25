@@ -69,7 +69,7 @@ const LiveOrders = () => {
                     </Stack>
                     <Divider sx={{ mt: 1, mb: 1 }} />
                     <div className="row">
-                        <div className="col-md-4">
+                        <div className="col-md-4 mb-3">
                             <Stack direction={'row'} alignItems={'center'}>
                                 <Typography sx={{ fontSize: 12, fontWeight: 600 }}>Order Details ({items.length})</Typography>
                                 <IconButton>
@@ -104,7 +104,7 @@ const LiveOrders = () => {
                                 </Stack>
                             </Stack>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-6 mb-3">
                             <Stack direction={'row'} alignItems={'center'}>
                                 <Typography sx={{ fontSize: 12, fontWeight: 600 }}>Ordered Items ({items.length})</Typography>
                                 <IconButton>
@@ -136,8 +136,10 @@ const LiveOrders = () => {
                             </Stack>
                         </div>
                         <div className="col-md-2">
-                            <Button variant="outlined" color="success" size="small" sx={{ textTransform: 'none' }} >Accept</Button>
-                            <Button variant="outlined" color="error" size="small" sx={{ mt: 1, textTransform: 'none' }}>Cancel</Button>
+                           <Stack direction={'column'} spacing={2}>
+                           <Button variant="outlined" color="success" size="small" sx={{ textTransform: 'none' }} >Accept</Button>
+                            <Button variant="outlined" color="error" size="small" sx={{ textTransform: 'none' }}>Cancel</Button>
+                           </Stack>
                         </div>
                     </div>
                 </Stack>
