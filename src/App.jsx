@@ -33,6 +33,7 @@ import StatusIndicator from "./Components/StatusIndicator";
 import ViewProduct from "./Pages/Products/ViewProduct";
 import EditProduct from "./Pages/Products/EditProduct";
 import QuantityAdjustment from "./Pages/Products/QuantityAdjustment";
+import LiveOrders from "./Pages/Orders/LiveOrders";
 const App = () => {
   const matches = useMediaQuery('(min-width:600px)');
   
@@ -74,6 +75,7 @@ const App = () => {
               <Route path="/viewProduct/:id" element={<ViewProduct />} />
               <Route path="/editProduct/:id" element={<EditProduct />} />
               <Route path="/quantityAdjustment" element={<QuantityAdjustment />} />
+              <Route path="/liveOrder" element={<LiveOrders />} />
             </Routes>
             </Stack>
           </Stack>
