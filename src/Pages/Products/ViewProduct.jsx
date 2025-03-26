@@ -32,6 +32,7 @@ import ProductionQuantityLimitsOutlinedIcon from "@mui/icons-material/Production
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../Components/BackButton";
+import VisibilitySwitch from "../../Components/VisibilitySwitch";
 
 const ViewProduct = () => {
   const { id } = useParams();
@@ -186,7 +187,7 @@ const ViewProduct = () => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        {true ? (
+        {productData.isVisible ? (
           <Stack direction={"row"} alignItems={"center"}>
             <FiberManualRecordIcon sx={{ color: "#3D8D7A", fontSize: 14 }} />
             <Typography
@@ -205,7 +206,7 @@ const ViewProduct = () => {
             </Typography>
           </Stack>
         )}
-        <Switch defaultChecked size="small" color="success" />
+        <VisibilitySwitch productId={id} initialVisibility={productData.isVisible} reloadContent={getProduct} />
       </Stack>
       {/* Product Header */}
       <Stack direction={!matches ? "column" : "row"} spacing={2}>

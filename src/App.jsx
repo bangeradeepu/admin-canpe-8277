@@ -34,6 +34,9 @@ import ViewProduct from "./Pages/Products/ViewProduct";
 import EditProduct from "./Pages/Products/EditProduct";
 import QuantityAdjustment from "./Pages/Products/QuantityAdjustment";
 import LiveOrders from "./Pages/Orders/LiveOrders";
+import DeliveryPartnersList from "./Pages/Peoples/DeliveryPartner/DeliveryPartnersList";
+import AddDeliveryPartner from "./Pages/Peoples/DeliveryPartner/AddDeliveryPartner";
+import UserList from "./Pages/Peoples/Users/UserList";
 const App = () => {
   const matches = useMediaQuery('(min-width:600px)');
   
@@ -76,6 +79,10 @@ const App = () => {
               <Route path="/editProduct/:id" element={<EditProduct />} />
               <Route path="/quantityAdjustment" element={<QuantityAdjustment />} />
               <Route path="/liveOrder" element={<LiveOrders />} />
+              <Route path="/deliveryPartners" element={<DeliveryPartnersList />} />
+              <Route path="/addDeliveryPartner" element={<AddDeliveryPartner />} />
+              <Route path="/users" element={<UserList />} />
+
             </Routes>
             </Stack>
           </Stack>
