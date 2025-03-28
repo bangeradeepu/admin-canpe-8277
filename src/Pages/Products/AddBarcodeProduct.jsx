@@ -77,6 +77,7 @@ const AddBarcodeProduct = () => {
     description: "",
     productDiscount: "",
     discountEnabled: true,
+    iseNewProduct:false,
     pcs: "1",
   });
 
@@ -87,8 +88,11 @@ const AddBarcodeProduct = () => {
   const [uploading, setUploading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [barcodeScanned, setBarcodeScanned] = useState("");
-  const handleMrpCheckbox = (event) => {
+  const handleDiscountCheck = (event) => {
     setProduct({ ...product, discountEnabled: event.target.checked });
+  };
+  const handleNewProduct = (event) => {
+    setProduct({ ...product, iseNewProduct: event.target.checked });
   };
 
   const handleChange = (e) => {
@@ -343,7 +347,7 @@ const AddBarcodeProduct = () => {
                 <div className="col-md-6">
                   <TextField
                     fullWidth
-                    label="Product MRP"
+                    label="Product Discount"
                     type="number"
                     name="productDiscount"
                     value={product.productDiscount}
@@ -358,11 +362,11 @@ const AddBarcodeProduct = () => {
                     control={
                       <Checkbox
                         checked={product.discountEnabled}
-                        onChange={handleMrpCheckbox}
+                        onChange={handleDiscountCheck}
                         color="primary"
                       />
                     }
-                    label="Enable MRP"
+                    label="Enable Discount"
                   />
                 </div>
                 <div className="col-md-6">
@@ -464,7 +468,20 @@ const AddBarcodeProduct = () => {
                       />
                     </div>
                   </div>
+                  
                 </div>
+                <div className="col-md-6 mt-2">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={product.iseNewProduct}
+                    onChange={handleNewProduct}
+                    color="primary"
+                  />
+                }
+                label="New Product"
+              />
+            </div>
               </div>
               <TextField
                 sx={{ mt: 1 }}

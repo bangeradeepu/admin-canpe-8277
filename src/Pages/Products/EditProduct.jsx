@@ -88,13 +88,16 @@ const EditProduct = () => {
     description: "",
     productDiscount: "",
     discountEnabled: true,
+    iseNewProduct:false,
     pcs: "1",
   });
 
-  const handleMrpCheckbox = (event) => {
+  const handleDiscountCheck = (event) => {
     setProduct({ ...product, discountEnabled: event.target.checked });
   };
-
+  const handleNewProduct = (event) => {
+    setProduct({ ...product, iseNewProduct: event.target.checked });
+  };
   const fetchProductById = async () => {
     try {
       const response = await axios.get(
@@ -359,7 +362,7 @@ const EditProduct = () => {
             <div className="col-md-6">
               <TextField
                 fullWidth
-                label="Product MRP"
+                label="Product Discount"
                 type="number"
                 name="productDiscount"
                 value={product.productDiscount}
@@ -374,11 +377,11 @@ const EditProduct = () => {
                             control={
                               <Checkbox
                                 checked={product.discountEnabled}
-                                onChange={handleMrpCheckbox}
+                                onChange={handleDiscountCheck}
                                 color="primary"
                               />
                             }
-                            label="Enable MRP"
+                            label="Enable Discount"
                           />
                         </div>
             <div className="col-md-6">
@@ -480,6 +483,19 @@ const EditProduct = () => {
                   />
                 </div>
               </div>
+              
+            </div>
+            <div className="col-md-6 mt-2">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={product.iseNewProduct}
+                    onChange={handleNewProduct}
+                    color="primary"
+                  />
+                }
+                label="New Product"
+              />
             </div>
           </div>
           <TextField

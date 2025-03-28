@@ -80,6 +80,7 @@ const AddProduct = () => {
     description: "",
     productDiscount: "",
     discountEnabled: true,
+    iseNewProduct:false,
     pcs: "1",
   });
 
@@ -90,10 +91,13 @@ const AddProduct = () => {
   const [uploading, setUploading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-  const handleMrpCheckbox = (event) => {
+  const handleDiscountCheck = (event) => {
     setProduct({ ...product, discountEnabled: event.target.checked });
   };
-
+  const handleNewProduct = (event) => {
+    console.log( event.target.checked)
+    setProduct({ ...product, iseNewProduct: event.target.checked });
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -222,6 +226,7 @@ const AddProduct = () => {
         `${import.meta.env.VITE_API_URL}/products`,
         finalProduct
       );
+      console.log('finalProd',finalProduct)
       enqueueSnackbar("Product Added!", { variant: "success" });
 
       setProduct({
@@ -329,7 +334,7 @@ const AddProduct = () => {
             <div className="col-md-6">
               <TextField
                 fullWidth
-                label="Product MRP"
+                label="Product Discount"
                 type="number"
                 name="productDiscount"
                 value={product.productDiscount}
@@ -343,11 +348,11 @@ const AddProduct = () => {
                 control={
                   <Checkbox
                     checked={product.discountEnabled}
-                    onChange={handleMrpCheckbox}
+                    onChange={handleDiscountCheck}
                     color="primary"
                   />
                 }
-                label="Enable MRP"
+                label="Enable Discount"
               />
             </div>
             <div className="col-md-6">
@@ -448,7 +453,20 @@ const AddProduct = () => {
                     required
                   />
                 </div>
+                
               </div>
+            </div>
+            <div className="col-md-6 mt-2">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={product.iseNewProduct}
+                    onChange={handleNewProduct}
+                    color="primary"
+                  />
+                }
+                label="New Product"
+              />
             </div>
           </div>
           <TextField
