@@ -76,7 +76,7 @@ const AddBarcodeProduct = () => {
     productImage: "",
     description: "",
     productDiscount: "",
-    discountEnabled: true,
+    discountEnabled: false,
     iseNewProduct:false,
     pcs: "1",
   });
@@ -262,7 +262,8 @@ const AddBarcodeProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
-        discountEnabled: true,
+        discountEnabled: false,
+        iseNewProduct:false,
         productDiscount: "",
         pcs: "1",
       });

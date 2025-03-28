@@ -87,7 +87,7 @@ const EditProduct = () => {
     productImage: "",
     description: "",
     productDiscount: "",
-    discountEnabled: true,
+    discountEnabled: false,
     iseNewProduct:false,
     pcs: "1",
   });
@@ -251,7 +251,7 @@ const EditProduct = () => {
         `${import.meta.env.VITE_API_URL}/products/${id}`,
         finalProduct
       );
-      enqueueSnackbar("Product Added!", { variant: "success" });
+      enqueueSnackbar("Product Updated!", { variant: "success" });
 
       setProduct({
         productName: "",
@@ -265,7 +265,9 @@ const EditProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
-        discountEnabled: true,
+        productDiscount: "",
+        discountEnabled: false,
+        iseNewProduct:false,
         pcs: "1",
       });
 

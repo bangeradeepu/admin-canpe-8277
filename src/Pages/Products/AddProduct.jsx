@@ -79,7 +79,7 @@ const AddProduct = () => {
     productImage: "",
     description: "",
     productDiscount: "",
-    discountEnabled: true,
+    discountEnabled: false,
     iseNewProduct:false,
     pcs: "1",
   });
@@ -242,7 +242,7 @@ const AddProduct = () => {
         productImage: "",
         description: "",
         productDiscount: "",
-        discountEnabled: true,
+        discountEnabled: false,
         pcs: "1",
       });
 
