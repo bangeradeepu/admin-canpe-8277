@@ -75,8 +75,8 @@ const AddBarcodeProduct = () => {
     unitValue: "",
     productImage: "",
     description: "",
-    productMrp: "",
-    mrpEnabled: true,
+    productDiscount: "",
+    discountEnabled: true,
     pcs: "1",
   });
 
@@ -88,7 +88,7 @@ const AddBarcodeProduct = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [barcodeScanned, setBarcodeScanned] = useState("");
   const handleMrpCheckbox = (event) => {
-    setProduct({ ...product, mrpEnabled: event.target.checked });
+    setProduct({ ...product, discountEnabled: event.target.checked });
   };
 
   const handleChange = (e) => {
@@ -111,7 +111,7 @@ const AddBarcodeProduct = () => {
         "productPrice",
         "productQuantity",
         "barcode",
-        "productMrp",
+        "productDiscount",
         "pcs",
       ].includes(name)
         ? Math.max(0, Number(value)) // Prevents negative numbers
@@ -258,8 +258,8 @@ const AddBarcodeProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
-        mrpEnabled: true,
-        productMrp: "",
+        discountEnabled: true,
+        productDiscount: "",
         pcs: "1",
       });
 
@@ -345,8 +345,8 @@ const AddBarcodeProduct = () => {
                     fullWidth
                     label="Product MRP"
                     type="number"
-                    name="productMrp"
-                    value={product.productMrp}
+                    name="productDiscount"
+                    value={product.productDiscount}
                     onChange={handleChange}
                     margin="normal"
                     size="small"
@@ -357,7 +357,7 @@ const AddBarcodeProduct = () => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={product.mrpEnabled}
+                        checked={product.discountEnabled}
                         onChange={handleMrpCheckbox}
                         color="primary"
                       />

@@ -293,7 +293,7 @@ const ViewProduct = () => {
               MRP (Maximum Retail Price)
             </Typography>
             <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
-              ₹{productData.productMrp}
+              ₹{productData.productDiscount}
             </Typography>
           </div>
         </div>

@@ -86,13 +86,13 @@ const EditProduct = () => {
     unitValue: "",
     productImage: "",
     description: "",
-    productMrp: "",
-    mrpEnabled: true,
+    productDiscount: "",
+    discountEnabled: true,
     pcs: "1",
   });
 
   const handleMrpCheckbox = (event) => {
-    setProduct({ ...product, mrpEnabled: event.target.checked });
+    setProduct({ ...product, discountEnabled: event.target.checked });
   };
 
   const fetchProductById = async () => {
@@ -143,7 +143,7 @@ const EditProduct = () => {
         "productPrice",
         "productQuantity",
         "barcode",
-        "productMrp",
+        "productDiscount",
         "pcs",
       ].includes(name)
         ? Math.max(0, Number(value)) // Prevents negative numbers
@@ -262,7 +262,7 @@ const EditProduct = () => {
         barcode: "",
         productImage: "",
         description: "",
-        mrpEnabled: true,
+        discountEnabled: true,
         pcs: "1",
       });
 
@@ -361,8 +361,8 @@ const EditProduct = () => {
                 fullWidth
                 label="Product MRP"
                 type="number"
-                name="productMrp"
-                value={product.productMrp}
+                name="productDiscount"
+                value={product.productDiscount}
                 onChange={handleChange}
                 margin="normal"
                 size="small"
@@ -373,7 +373,7 @@ const EditProduct = () => {
                           <FormControlLabel
                             control={
                               <Checkbox
-                                checked={product.mrpEnabled}
+                                checked={product.discountEnabled}
                                 onChange={handleMrpCheckbox}
                                 color="primary"
                               />
