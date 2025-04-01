@@ -10,6 +10,7 @@ import {
   Stack,
   Checkbox,
   FormControlLabel,
+  Switch
 } from "@mui/material";
 import Cropper from "react-easy-crop";
 import { storage } from "../../firebase/firebase";
@@ -18,6 +19,8 @@ import axios from "axios";
 import BarcodeScanner from "../../Components/BarcodeScanner";
 import { enqueueSnackbar } from "notistack";
 import BackButton from "../../Components/BackButton";
+import RestaurantIcon from "@mui/icons-material/Restaurant"; // Non-Veg Icon
+import SpaIcon from "@mui/icons-material/Spa"; // Veg Icon
 
 const AddBarcodeProduct = () => {
   useEffect(() => {
@@ -79,6 +82,7 @@ const AddBarcodeProduct = () => {
     discountEnabled: false,
     iseNewProduct:false,
     pcs: "1",
+    tag:true,
   });
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -93,6 +97,11 @@ const AddBarcodeProduct = () => {
   };
   const handleNewProduct = (event) => {
     setProduct({ ...product, iseNewProduct: event.target.checked });
+  };
+  const [isVeg, setIsVeg] = useState(true);
+  const handleVegNonVeg = (event) => {
+    setIsVeg(event.target.checked);
+    setProduct({ ...product, tag: event.target.checked });
   };
 
   const handleChange = (e) => {
@@ -266,6 +275,7 @@ const AddBarcodeProduct = () => {
         iseNewProduct:false,
         productDiscount: "",
         pcs: "1",
+        tag:true,
       });
 
       setImageSrc(null);
@@ -484,6 +494,24 @@ const AddBarcodeProduct = () => {
               />
             </div>
               </div>
+              <Stack direction="row" alignItems="center" spacing={1} mt={1} mb={1}>
+      {isVeg ? <SpaIcon sx={{ color: "green" }} /> : <RestaurantIcon sx={{ color: "red" }} />}
+      <FormControlLabel
+        control={
+          <Switch
+          size="small"
+            checked={isVeg}
+            onChange={handleVegNonVeg}
+            color="success"
+          />
+        }
+        label={
+          <Typography sx={{ fontWeight: 600,fontSize:14 }}>
+            {isVeg ? "Veg" : "Non-Veg"}
+          </Typography>
+        }
+      />
+    </Stack>
               <TextField
                 sx={{ mt: 1 }}
                 name="description"

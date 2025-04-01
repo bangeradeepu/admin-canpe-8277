@@ -11,6 +11,7 @@ import {
   IconButton,
   Checkbox,
   FormControlLabel,
+  Switch,
 } from "@mui/material";
 import Cropper from "react-easy-crop";
 import { storage } from "../../firebase/firebase";
@@ -20,6 +21,8 @@ import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../Components/BackButton";
 import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
+import RestaurantIcon from "@mui/icons-material/Restaurant"; // Non-Veg Icon
+import SpaIcon from "@mui/icons-material/Spa"; // Veg Icon
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -66,6 +69,8 @@ const AddProduct = () => {
     }
   };
 
+  
+
   const [product, setProduct] = useState({
     productName: "",
     productCost: "",
@@ -82,6 +87,7 @@ const AddProduct = () => {
     discountEnabled: false,
     iseNewProduct:false,
     pcs: "1",
+    tag:true,
   });
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -90,6 +96,7 @@ const AddProduct = () => {
   const [croppedImage, setCroppedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+ 
 
   const handleDiscountCheck = (event) => {
     setProduct({ ...product, discountEnabled: event.target.checked });
@@ -98,6 +105,12 @@ const AddProduct = () => {
     console.log( event.target.checked)
     setProduct({ ...product, iseNewProduct: event.target.checked });
   };
+  const [isVeg, setIsVeg] = useState(true);
+  const handleVegNonVeg = (event) => {
+    setIsVeg(event.target.checked);
+    setProduct({ ...product, tag: event.target.checked });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -244,6 +257,7 @@ const AddProduct = () => {
         productDiscount: "",
         discountEnabled: false,
         pcs: "1",
+        tag:true,
       });
 
       setImageSrc(null);
@@ -469,6 +483,24 @@ const AddProduct = () => {
               />
             </div>
           </div>
+          <Stack direction="row" alignItems="center" spacing={1} mt={1} mb={1}>
+      {isVeg ? <SpaIcon sx={{ color: "green" }} /> : <RestaurantIcon sx={{ color: "red" }} />}
+      <FormControlLabel
+        control={
+          <Switch
+          size="small"
+            checked={isVeg}
+            onChange={handleVegNonVeg}
+            color="success"
+          />
+        }
+        label={
+          <Typography sx={{ fontWeight: 600,fontSize:14 }}>
+            {isVeg ? "Veg" : "Non-Veg"}
+          </Typography>
+        }
+      />
+    </Stack>
           <TextField
             sx={{ mt: 1 }}
             name="description"

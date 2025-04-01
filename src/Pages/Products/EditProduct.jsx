@@ -10,6 +10,7 @@ import {
   Stack,
   Checkbox,
   FormControlLabel,
+  Switch
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import Cropper from "react-easy-crop";
@@ -19,6 +20,8 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../Components/BackButton";
+import RestaurantIcon from "@mui/icons-material/Restaurant"; // Non-Veg Icon
+import SpaIcon from "@mui/icons-material/Spa"; // Veg Icon
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -88,8 +91,9 @@ const EditProduct = () => {
     description: "",
     productDiscount: "",
     discountEnabled: false,
-    iseNewProduct:false,
+    iseNewProduct: false,
     pcs: "1",
+    tag: true,
   });
 
   const handleDiscountCheck = (event) => {
@@ -98,21 +102,32 @@ const EditProduct = () => {
   const handleNewProduct = (event) => {
     setProduct({ ...product, iseNewProduct: event.target.checked });
   };
+
+  const [isVeg, setIsVeg] = useState(true);
+  const handleVegNonVeg = (event) => {
+    const newValue = event.target.checked;
+    setIsVeg(newValue);
+    setProduct(prev => ({ ...prev, tag: newValue }));
+  };
   const fetchProductById = async () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/products/${id}`
       );
       const productData = response.data.product;
-
+  
+      // Set isVeg based on the product's tag value
+      setIsVeg(productData.tag);
+  
       setProduct({
         ...productData,
         category: productData.category?.categoryId || "",
         warehouse: productData.warehouse?.warehouseId || "",
         unit: productData.unit?.unitId || "",
         unitValue: productData.unit?.unitValue || "",
+        tag: productData.tag
       });
-
+  
       console.log(productData);
     } catch (error) {
       console.error("Product not found:", error);
@@ -267,8 +282,9 @@ const EditProduct = () => {
         description: "",
         productDiscount: "",
         discountEnabled: false,
-        iseNewProduct:false,
+        iseNewProduct: false,
         pcs: "1",
+        tag: true,
       });
 
       setImageSrc(null);
@@ -300,13 +316,13 @@ const EditProduct = () => {
 
   return (
     <Stack sx={{ p: 1 }}>
-        <Stack direction={'row'} alignItems={'center'}  spacing={1}>
-            <BackButton />
-        <Typography sx={{fontSize:20,fontWeight:500}} gutterBottom>
-        Edit Product
-      </Typography>
-        </Stack>
-      
+      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+        <BackButton />
+        <Typography sx={{ fontSize: 20, fontWeight: 500 }} gutterBottom>
+          Edit Product
+        </Typography>
+      </Stack>
+
       <Box>
         <form onSubmit={handleSubmit}>
           <div className="row">
@@ -371,21 +387,21 @@ const EditProduct = () => {
                 onChange={handleChange}
                 margin="normal"
                 size="small"
-                
+
               />
             </div>
-              <div className="col-md-6 mt-2">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={product.discountEnabled}
-                                onChange={handleDiscountCheck}
-                                color="primary"
-                              />
-                            }
-                            label="Enable Discount"
-                          />
-                        </div>
+            <div className="col-md-6 mt-2">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={product.discountEnabled}
+                    onChange={handleDiscountCheck}
+                    color="primary"
+                  />
+                }
+                label="Enable Discount"
+              />
+            </div>
             <div className="col-md-6">
               <TextField
                 fullWidth
@@ -485,7 +501,7 @@ const EditProduct = () => {
                   />
                 </div>
               </div>
-              
+
             </div>
             <div className="col-md-6 mt-2">
               <FormControlLabel
@@ -500,6 +516,24 @@ const EditProduct = () => {
               />
             </div>
           </div>
+          <Stack direction="row" alignItems="center" spacing={1} mt={1} mb={1}>
+            {isVeg ? <SpaIcon sx={{ color: "green" }} /> : <RestaurantIcon sx={{ color: "red" }} />}
+            <FormControlLabel
+              control={
+                <Switch
+                  size="small"
+                  checked={isVeg}
+                  onChange={handleVegNonVeg}
+                  color="success"
+                />
+              }
+              label={
+                <Typography sx={{ fontWeight: 600, fontSize: 14 }}>
+                  {isVeg ? "Veg" : "Non-Veg"}
+                </Typography>
+              }
+            />
+          </Stack>
           <TextField
             sx={{ mt: 1 }}
             name="description"
