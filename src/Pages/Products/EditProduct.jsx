@@ -15,7 +15,7 @@ import {
 import { useParams } from "react-router-dom";
 import Cropper from "react-easy-crop";
 import { storage } from "../../firebase/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL,deleteObject } from "firebase/storage";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
@@ -250,24 +250,38 @@ const EditProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      let imageUrl = "https://placehold.jp/50x50.png"; // Default placeholder
-
-      if (!imageSrc) {
-        imageUrl = product.productImage;
-      } else {
+      let imageUrl = product.productImage; // Start with current image
+  
+      // Only process image if a new one was selected
+      if (imageSrc) {
+        // Delete old image if it's not the default placeholder
+        if (product.productImage && !product.productImage.includes('placehold.jp')) {
+          try {
+            // Extract the path from the URL
+            const oldImagePath = product.productImage.split('/o/')[1].split('?')[0];
+            const oldImageRef = ref(storage, decodeURIComponent(oldImagePath));
+            await deleteObject(oldImageRef);
+          } catch (error) {
+            console.error("Error deleting old image:", error);
+            // Continue even if deletion fails
+          }
+        }
+  
+        // Upload new image
         imageUrl = await uploadImage();
       }
-
+  
       const finalProduct = { ...product, productImage: imageUrl };
-      console.log("final apyload", finalProduct);
+      console.log("final payload", finalProduct);
       await axios.put(
         `${import.meta.env.VITE_API_URL}/products/${id}`,
         finalProduct
       );
       enqueueSnackbar("Product Updated!", { variant: "success" });
-
+  
+      // Reset form
       setProduct({
         productName: "",
         productCost: "",
@@ -286,14 +300,14 @@ const EditProduct = () => {
         pcs: "1",
         tag: true,
       });
-
+  
       setImageSrc(null);
       setCroppedImage(null);
       navigate("/productList");
     } catch (error) {
       console.error("Error adding product:", error);
-
-      if (error.response.data.message === "Barcode already exists") {
+  
+      if (error.response?.data?.message === "Barcode already exists") {
         enqueueSnackbar("Item already exists", { variant: "error" });
       } else {
         enqueueSnackbar("Something went wrong!", { variant: "error" });
