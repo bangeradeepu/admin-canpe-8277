@@ -21,6 +21,8 @@ import { enqueueSnackbar } from "notistack";
 import BackButton from "../../Components/BackButton";
 import RestaurantIcon from "@mui/icons-material/Restaurant"; // Non-Veg Icon
 import SpaIcon from "@mui/icons-material/Spa"; // Veg Icon
+import { Ham } from 'lucide-react';
+import { Vegan } from 'lucide-react';
 
 const AddBarcodeProduct = () => {
   useEffect(() => {
@@ -495,7 +497,7 @@ const AddBarcodeProduct = () => {
             </div>
               </div>
               <Stack direction="row" alignItems="center" spacing={1} mt={1} mb={1}>
-      {isVeg ? <SpaIcon sx={{ color: "green" }} /> : <RestaurantIcon sx={{ color: "red" }} />}
+      {isVeg ? <Vegan style={{ color: "green" }} /> : <Ham style={{ color: "red" }} />}
       <FormControlLabel
         control={
           <Switch

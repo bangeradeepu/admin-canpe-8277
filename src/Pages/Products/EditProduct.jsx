@@ -22,6 +22,8 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../../Components/BackButton";
 import RestaurantIcon from "@mui/icons-material/Restaurant"; // Non-Veg Icon
 import SpaIcon from "@mui/icons-material/Spa"; // Veg Icon
+import { Ham } from 'lucide-react';
+import { Vegan } from 'lucide-react';
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -531,7 +533,7 @@ const EditProduct = () => {
             </div>
           </div>
           <Stack direction="row" alignItems="center" spacing={1} mt={1} mb={1}>
-            {isVeg ? <SpaIcon sx={{ color: "green" }} /> : <RestaurantIcon sx={{ color: "red" }} />}
+            {isVeg ? <Vegan sx={{ color: "green" }} /> : <Ham sx={{ color: "red" }} />}
             <FormControlLabel
               control={
                 <Switch
