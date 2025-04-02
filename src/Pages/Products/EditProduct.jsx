@@ -533,7 +533,7 @@ const EditProduct = () => {
             </div>
           </div>
           <Stack direction="row" alignItems="center" spacing={1} mt={1} mb={1}>
-            {isVeg ? <Vegan sx={{ color: "green" }} /> : <Ham sx={{ color: "red" }} />}
+            {isVeg ? <Vegan style={{ color: "green" }} /> : <Ham style={{ color: "red" }} />}
             <FormControlLabel
               control={
                 <Switch
