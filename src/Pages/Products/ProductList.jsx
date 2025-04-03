@@ -53,7 +53,7 @@ const ProductList = () => {
   const handleDelete = async (id, imageUrl) => {
     try {
       // Delete image from Firebase Storage if URL exists
-      if (!imageUrl === "https://placehold.jp/50x50.png") {
+      if (imageUrl !== "https://placehold.jp/50x50.png") {
         const imageRef = ref(storage, imageUrl);
         await deleteObject(imageRef);
         console.log("Image deleted from Firebase");
