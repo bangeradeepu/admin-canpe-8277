@@ -10,32 +10,34 @@ import Pusher from 'pusher-js';
 
 
 const LiveOrders = () => {
-    useEffect(() => {
-        // Enable logging (optional but useful for debugging)
-        Pusher.logToConsole = true;
-    
-        // Connect to Pusher
-        const pusher = new Pusher('36dba3670bc31f93e66a', {
-          cluster: 'ap2',
-        });
-    
-        // Subscribe to the correct channel
-        const channel = pusher.subscribe('order-channel');
-    
-        // Bind to the correct event name
-        channel.bind('order-created', function (data) {
-          console.log('📦 New Order Received via Pusher:', data);
-    
-          // You can also show a toast or alert here
-          alert(`New Order #${data.orderNumber} from ${data.customerName}`);
-        });
-    
-        // Clean up on unmount
-        return () => {
-          channel.unbind_all();
-          channel.unsubscribe();
-        };
-      }, []);
+
+    const [pusher, setPusher] = useState(null);
+
+// Pusher Config
+useEffect(() => {
+    const pusherInstance = new Pusher('36dba3670bc31f93e66a', {
+      cluster: 'ap2',
+      encrypted: true,
+    });
+
+    console.log(pusherInstance);
+setPusher(pusherInstance);
+    return () => {
+      if (pusherInstance) {
+        pusherInstance.disconnect();
+      }
+    };
+  }, []);
+
+  useEffect(()=>{
+    if (!pusher) return;
+    const channel = pusher.subscribe('order-channel');
+    channel.bind("order-created", (data) => {
+        const {customerName} = data;
+        console.log(customerName);
+    });
+  },[])
+
     const [orderData, setOrderData] = useState([]);
 
     useEffect(() => {
