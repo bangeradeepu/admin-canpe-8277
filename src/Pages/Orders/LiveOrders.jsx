@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { IconButton, TextField, Button, Stack, Typography, Box, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import BackButton from "../../Components/BackButton";
 import AdjustIcon from '@mui/icons-material/Adjust';
@@ -11,61 +11,63 @@ import Pusher from 'pusher-js';
 
 const LiveOrders = () => {
 
-    const [pusher, setPusher] = useState(null);
+    const audioRef = useRef(null);
 
-    // Pusher Config
     useEffect(() => {
-        const pusherInstance = new Pusher('36dba3670bc31f93e66a', {
-            cluster: 'ap2',
-            encrypted: true,
-        });
+        audioRef.current = new Audio('/sound.mp3');
+        audioRef.current.loop = true; // Set to loop
 
-        console.log(pusherInstance);
-        setPusher(pusherInstance);
-        return () => {
-            if (pusherInstance) {
-                pusherInstance.disconnect();
-            }
+        const unlockAudio = () => {
+            audioRef.current.play().then(() => {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            });
+            window.removeEventListener('click', unlockAudio);
         };
+
+        window.addEventListener('click', unlockAudio);
     }, []);
+    
+    const makeSound = () => {
+        if (audioRef.current) {
+            audioRef.current.play().then(() => {
+                console.log('Sound on')
+            }).catch((err) => {
+                console.error('Audio play failed:', err);
+            });
+        }
+    };
+
+    const stopSound = () => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+            console.log('Stop sound')
+        }
+    };
+    
+
 
     useEffect(() => {
-        if (!pusher) return;
-        const channel = pusher.subscribe('order-channel');
-        channel.bind("order-created", (data) => {
-            const { customerName } = data;
-            console.log(customerName);
-        });
-    }, [])
-
-
-
-    useEffect(() => {
-        // Enable logging (optional but useful for debugging)
-        Pusher.logToConsole = true;
-
-        // Connect to Pusher
+        // Pusher.logToConsole = true;
         const pusher = new Pusher('36dba3670bc31f93e66a', {
             cluster: 'ap2',
         });
-
-        // Subscribe to the correct channel
         const channel = pusher.subscribe('order-channel');
-
         // Bind to the correct event name
         channel.bind('order-created', function (data) {
             console.log('📦 New Order Received via Pusher:', data);
-
-            // You can also show a toast or alert here
-            alert(`New Order #${data.orderNumber} from ${data.customerName}`);
+            makeSound();
+            getData();
+            // alert(`New Order #${data.orderNumber} from ${data.customerName}`);
         });
-
-        // Clean up on unmount
         return () => {
             channel.unbind_all();
             channel.unsubscribe();
         };
     }, []);
+
+
 
 
 
@@ -90,6 +92,9 @@ const LiveOrders = () => {
 
     return (
         <Stack>
+             <button onClick={stopSound} style={{ backgroundColor: 'green', color: 'white' }}>
+                    Accept (Stop Sound)
+                </button>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} mb={1}>
                 <Stack direction={'row'} alignItems={'center'} spacing={1} mb={1}>
                     <BackButton />
@@ -126,7 +131,7 @@ const LiveOrders = () => {
 
                 />
             </Stack>
-            {orderData.map((order, index) => (
+            {orderData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((order, index) => (
                 <Stack key={order._id} sx={{ border: 1, borderColor: '#dadada', p: 1, borderRadius: 2, mb: 2 }}>
                     <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
                         <Stack direction={'row'} alignItems={'center'} spacing={1}>
@@ -136,8 +141,8 @@ const LiveOrders = () => {
                             <Typography sx={{ fontSize: 12, color: '#aeaeae' }}><FormattedDateIST isoDateString={order.createdAt} /></Typography>
                         </Stack>
                         <Stack direction={'row'} spacing={0.5} alignItems={'center'}>
-                            <AdjustIcon sx={{ color: 'green', fontSize: 14 }} />
-                            <Typography sx={{ fontWeight: 500, fontSize: 12, color: 'green' }}>{order.orderStatus}</Typography>
+                            <AdjustIcon sx={{ color: 'red', fontSize: 14 }} />
+                            <Typography sx={{ fontWeight: 500, fontSize: 12, color: 'red' }}>{order.orderStatus}</Typography>
 
                         </Stack>
                         <Stack direction={'row'} spacing={0.5} alignItems={'center'}>
